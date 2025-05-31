@@ -41,6 +41,8 @@ export function ApplianceFilters() {
 
   // Initialize filters from URL params
   useEffect(() => {
+    if (!searchParams) return;
+
     const propertyParam = searchParams.get("property");
     const statusParam = searchParams.get("status");
     const categoryParam = searchParams.get("category");
