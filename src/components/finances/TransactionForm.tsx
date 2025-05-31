@@ -172,7 +172,8 @@ export function TransactionForm({
       },
     };
 
-    return descriptions[watchedType]?.[watchedSubtype as keyof typeof descriptions.income] ||
+    const typeDescriptions = descriptions[watchedType];
+    return typeDescriptions?.[watchedSubtype as keyof typeof typeDescriptions] ||
            "Fill out the form below to create a new transaction.";
   };
 
