@@ -18,7 +18,7 @@ export const applianceSchema = z.object({
   brand: z.string().optional(),
   model: z.string().optional(),
   serial_number: z.string().optional(),
-  status: z.enum(applianceStatuses).default("active"),
+  status: z.enum(applianceStatuses),
   installation_date: z.string().optional(),
   warranty_expiration: z.string().optional(),
   price: z.coerce.number().nonnegative().optional(),
