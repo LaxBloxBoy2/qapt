@@ -126,10 +126,13 @@ export function RentCollection() {
         .map((transaction, index) => {
           const lease = leases?.[index % (leases?.length || 1)];
           const tenant = lease?.lease_tenants?.find(lt => lt.is_primary)?.tenants;
-          
+
+          // Handle both single tenant object and array of tenants
+          const tenantData = Array.isArray(tenant) ? tenant[0] : tenant;
+
           return {
             id: transaction.id,
-            tenant_name: tenant ? `${tenant.first_name} ${tenant.last_name}` : 'Unknown Tenant',
+            tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
             property_name: lease?.unit?.properties?.name || 'Unknown Property',
             unit_name: lease?.unit?.name || 'Unknown Unit',
             amount: transaction.amount || 0,
@@ -144,10 +147,13 @@ export function RentCollection() {
         .slice(0, overdueCount)
         .map((lease, index) => {
           const tenant = lease.lease_tenants?.find(lt => lt.is_primary)?.tenants;
-          
+
+          // Handle both single tenant object and array of tenants
+          const tenantData = Array.isArray(tenant) ? tenant[0] : tenant;
+
           return {
             id: lease.id,
-            tenant_name: tenant ? `${tenant.first_name} ${tenant.last_name}` : 'Unknown Tenant',
+            tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
             property_name: lease.unit?.properties?.name || 'Unknown Property',
             unit_name: lease.unit?.name || 'Unknown Unit',
             amount_due: lease.rent_amount || 0,
