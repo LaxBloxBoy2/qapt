@@ -33,7 +33,7 @@ import { useDocuments, useDeleteDocument } from "@/hooks/useDocuments";
 import { useGetProperties } from "@/hooks/useProperties";
 import { useTenants } from "@/hooks/useTenants";
 import { useLeases } from "@/hooks/useLeases";
-import { DocumentWithRelations, DocumentFilters, documentCategoryConfig, documentStatusConfig } from "@/types/document";
+import { DocumentWithRelations, DocumentFilters, DocumentCategory, DocumentStatus, documentCategoryConfig, documentStatusConfig } from "@/types/document";
 import { DocumentUploadForm } from "./DocumentUploadForm";
 import { DocumentStatsCards } from "./DocumentStatsCards";
 
@@ -217,7 +217,7 @@ export function DocumentsList() {
           />
         </div>
 
-        <Select value={filters.category || "all"} onValueChange={(value) => setFilters({ ...filters, category: value === "all" ? undefined : value })}>
+        <Select value={filters.category || "all"} onValueChange={(value) => setFilters({ ...filters, category: value === "all" ? undefined : value as DocumentCategory })}>
           <SelectTrigger className="w-[180px] bg-white">
             <SelectValue placeholder="All Categories" />
           </SelectTrigger>
@@ -234,7 +234,7 @@ export function DocumentsList() {
           </SelectContent>
         </Select>
 
-        <Select value={filters.status || "all"} onValueChange={(value) => setFilters({ ...filters, status: value === "all" ? undefined : value })}>
+        <Select value={filters.status || "all"} onValueChange={(value) => setFilters({ ...filters, status: value === "all" ? undefined : value as DocumentStatus })}>
           <SelectTrigger className="w-[150px] bg-white">
             <SelectValue placeholder="All Status" />
           </SelectTrigger>
