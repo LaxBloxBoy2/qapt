@@ -101,7 +101,7 @@ function PropertyDetailPage({ params }: PropertyDetailPageProps) {
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary">
                 <i className="ri-home-line mr-1 h-3 w-3" />
-                {property.property_type || 'Residential'}
+                {property.type === 'single_unit' ? 'Single Unit' : property.type === 'multi_unit' ? 'Multi Unit' : 'Residential'}
               </Badge>
               <Badge variant="secondary">
                 <i className="ri-map-pin-line mr-1 h-3 w-3" />
