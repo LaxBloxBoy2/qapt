@@ -133,7 +133,7 @@ export function RentCollection() {
           return {
             id: transaction.id,
             tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
-            property_name: lease?.unit?.properties?.name || 'Unknown Property',
+            property_name: lease?.unit?.property?.name || 'Unknown Property',
             unit_name: lease?.unit?.name || 'Unknown Unit',
             amount: transaction.amount || 0,
             payment_date: transaction.created_at,
@@ -154,7 +154,7 @@ export function RentCollection() {
           return {
             id: lease.id,
             tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
-            property_name: lease.unit?.properties?.name || 'Unknown Property',
+            property_name: lease.unit?.property?.name || 'Unknown Property',
             unit_name: lease.unit?.name || 'Unknown Unit',
             amount_due: lease.rent_amount || 0,
             days_overdue: 5 + (index * 3), // Mock overdue days
