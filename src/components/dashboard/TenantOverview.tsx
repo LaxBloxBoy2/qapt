@@ -90,8 +90,11 @@ export function TenantOverview() {
       if (error) throw error;
 
       // Process tenant data
-      const activeTenants = tenants?.filter(tenant => 
-        tenant.lease_tenants?.some(lt => lt.leases?.status === 'active')
+      const activeTenants = tenants?.filter(tenant =>
+        tenant.lease_tenants?.some(lt => {
+          const lease = Array.isArray(lt.leases) ? lt.leases[0] : lt.leases;
+          return lease?.status === 'active';
+        })
       ) || [];
 
       const totalTenants = tenants?.length || 0;
@@ -99,7 +102,7 @@ export function TenantOverview() {
       // Calculate move-ins and move-outs this month
       const moveInsThisMonth = tenants?.filter(tenant =>
         tenant.lease_tenants?.some(lt => {
-          const lease = lt.leases;
+          const lease = Array.isArray(lt.leases) ? lt.leases[0] : lt.leases;
           if (!lease?.start_date) return false;
           const startDate = new Date(lease.start_date);
           return startDate >= startOfMonth && startDate <= endOfMonth;
@@ -108,7 +111,7 @@ export function TenantOverview() {
 
       const moveOutsThisMonth = tenants?.filter(tenant =>
         tenant.lease_tenants?.some(lt => {
-          const lease = lt.leases;
+          const lease = Array.isArray(lt.leases) ? lt.leases[0] : lt.leases;
           if (!lease?.end_date || lease.status !== 'expired') return false;
           const endDate = new Date(lease.end_date);
           return endDate >= startOfMonth && endDate <= endOfMonth;
@@ -119,14 +122,14 @@ export function TenantOverview() {
       const upcomingMoveIns: TenantMovement[] = [];
       tenants?.forEach(tenant => {
         tenant.lease_tenants?.forEach(lt => {
-          const lease = lt.leases;
+          const lease = Array.isArray(lt.leases) ? lt.leases[0] : lt.leases;
           if (lease?.status === 'upcoming' && lease.start_date) {
             const startDate = new Date(lease.start_date);
             if (isAfter(startDate, today) && isBefore(startDate, next30Days)) {
               upcomingMoveIns.push({
                 id: tenant.id,
                 tenant_name: `${tenant.first_name} ${tenant.last_name}`,
-                property_name: lease.unit?.properties?.name || 'Unknown Property',
+                property_name: lease.unit?.properties?.[0]?.name || 'Unknown Property',
                 unit_name: lease.unit?.name || 'Unknown Unit',
                 date: lease.start_date,
                 type: 'move_in'
@@ -140,14 +143,14 @@ export function TenantOverview() {
       const upcomingMoveOuts: TenantMovement[] = [];
       tenants?.forEach(tenant => {
         tenant.lease_tenants?.forEach(lt => {
-          const lease = lt.leases;
+          const lease = Array.isArray(lt.leases) ? lt.leases[0] : lt.leases;
           if (lease?.status === 'active' && lease.end_date) {
             const endDate = new Date(lease.end_date);
             if (isAfter(endDate, today) && isBefore(endDate, next30Days)) {
               upcomingMoveOuts.push({
                 id: tenant.id,
                 tenant_name: `${tenant.first_name} ${tenant.last_name}`,
-                property_name: lease.unit?.properties?.name || 'Unknown Property',
+                property_name: lease.unit?.properties?.[0]?.name || 'Unknown Property',
                 unit_name: lease.unit?.name || 'Unknown Unit',
                 date: lease.end_date,
                 type: 'move_out'
@@ -163,16 +166,17 @@ export function TenantOverview() {
         .slice(0, 5)
         .map(tenant => {
           const primaryLease = tenant.lease_tenants?.find(lt => lt.is_primary)?.leases;
+          const lease = Array.isArray(primaryLease) ? primaryLease[0] : primaryLease;
           return {
             id: tenant.id,
             first_name: tenant.first_name,
             last_name: tenant.last_name,
             email: tenant.email || '',
             phone: tenant.phone || '',
-            property_name: primaryLease?.unit?.properties?.name || 'No Property',
-            unit_name: primaryLease?.unit?.name || 'No Unit',
-            lease_start: primaryLease?.start_date || '',
-            lease_status: primaryLease?.status || 'unknown'
+            property_name: lease?.unit?.properties?.[0]?.name || 'No Property',
+            unit_name: lease?.unit?.name || 'No Unit',
+            lease_start: lease?.start_date || '',
+            lease_status: lease?.status || 'unknown'
           };
         });
 
