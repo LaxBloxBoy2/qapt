@@ -32,8 +32,8 @@ import { useTenants } from "@/hooks/useTenants";
 const sendNoticeSchema = z.object({
   subject: z.string().min(1, "Subject is required"),
   message: z.string().min(1, "Message is required"),
-  include_invoice_summary: z.boolean().default(true),
-  send_copy_to_self: z.boolean().default(false),
+  include_invoice_summary: z.boolean(),
+  send_copy_to_self: z.boolean(),
 });
 
 type SendNoticeForm = z.infer<typeof sendNoticeSchema>;
