@@ -130,11 +130,14 @@ export function RentCollection() {
           // Handle both single tenant object and array of tenants
           const tenantData = Array.isArray(tenant) ? tenant[0] : tenant;
 
+          // Handle unit as array (Supabase query returns it as array)
+          const unitData = Array.isArray(lease?.unit) ? lease?.unit[0] : lease?.unit;
+
           return {
             id: transaction.id,
             tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
-            property_name: lease?.unit?.properties?.[0]?.name || 'Unknown Property',
-            unit_name: lease?.unit?.name || 'Unknown Unit',
+            property_name: unitData?.properties?.[0]?.name || 'Unknown Property',
+            unit_name: unitData?.name || 'Unknown Unit',
             amount: transaction.amount || 0,
             payment_date: transaction.created_at,
             payment_method: 'Bank Transfer', // Mock data
@@ -151,11 +154,14 @@ export function RentCollection() {
           // Handle both single tenant object and array of tenants
           const tenantData = Array.isArray(tenant) ? tenant[0] : tenant;
 
+          // Handle unit as array (Supabase query returns it as array)
+          const unitData = Array.isArray(lease.unit) ? lease.unit[0] : lease.unit;
+
           return {
             id: lease.id,
             tenant_name: tenantData ? `${tenantData.first_name} ${tenantData.last_name}` : 'Unknown Tenant',
-            property_name: lease.unit?.properties?.[0]?.name || 'Unknown Property',
-            unit_name: lease.unit?.name || 'Unknown Unit',
+            property_name: unitData?.properties?.[0]?.name || 'Unknown Property',
+            unit_name: unitData?.name || 'Unknown Unit',
             amount_due: lease.rent_amount || 0,
             days_overdue: 5 + (index * 3), // Mock overdue days
             last_payment_date: addDays(today, -(30 + index * 5)).toISOString()
