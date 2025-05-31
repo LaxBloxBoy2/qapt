@@ -30,7 +30,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Upload, X } from "lucide-react";
-import { EMPLOYMENT_STATUS_OPTIONS } from "@/types/application";
+import { EMPLOYMENT_STATUS_OPTIONS, EmploymentStatus } from "@/types/application";
 
 const applicationSchema = z.object({
   first_name: z.string().min(1, "First name is required"),
@@ -41,7 +41,7 @@ const applicationSchema = z.object({
   property_id: z.string().min(1, "Property is required"),
   unit_id: z.string().min(1, "Unit is required"),
   monthly_income: z.number().min(0, "Monthly income must be positive"),
-  employment_status: z.string().min(1, "Employment status is required"),
+  employment_status: z.enum(['employed_full_time', 'employed_part_time', 'self_employed', 'unemployed', 'student', 'retired'] as const),
   has_pets: z.boolean(),
   pets_description: z.string().optional(),
   is_smoker: z.boolean(),
@@ -74,7 +74,7 @@ export default function ApplicationForm({ onSuccess, onCancel }: ApplicationForm
       property_id: "",
       unit_id: "",
       monthly_income: 0,
-      employment_status: "",
+      employment_status: "employed_full_time",
       has_pets: false,
       pets_description: "",
       is_smoker: false,
