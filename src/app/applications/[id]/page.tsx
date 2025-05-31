@@ -40,7 +40,7 @@ import Link from "next/link";
 function ApplicationDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const applicationId = params.id as string;
+  const applicationId = params?.id as string;
 
   const [newNote, setNewNote] = useState("");
   const [showApproveDialog, setShowApproveDialog] = useState(false);
