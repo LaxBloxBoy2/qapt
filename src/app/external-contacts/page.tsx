@@ -51,7 +51,7 @@ function ExternalContactsPage() {
         email: sp.email,
         phone: sp.phone,
         services_offered: sp.specialties || [],
-        status: sp.is_active ? 'active' : 'inactive',
+        status: (sp.is_active ? 'active' : 'inactive') as ContactStatus,
         rating: sp.rating || 0,
         emergency_contact: false,
         created_at: sp.created_at,
