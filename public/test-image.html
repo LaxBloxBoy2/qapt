@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            display: block;
+            margin: 10px 0;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Supabase Image Loading Test</h1>
+    
+    <div class="test-container">
+        <h2>Test 1: Direct Image Tag</h2>
+        <p>Testing with a direct img tag:</p>
+        <img 
+            id="test1" 
+            class="test-image" 
+            src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/property-photos/264f4e7d-905b-4f47-a948-0facbb324b0c/1747938328808-PCI%20DSS%20v4.0.0%20Standard%20and%20Compliance%20Principles.png" 
+            alt="Test Image 1"
+            onerror="document.getElementById('test1-result').innerHTML = 'ERROR: Image failed to load'; document.getElementById('test1-result').className = 'error';"
+            onload="document.getElementById('test1-result').innerHTML = 'SUCCESS: Image loaded correctly'; document.getElementById('test1-result').className = 'success';"
+        >
+        <p id="test1-result">Loading...</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 2: Image with crossOrigin</h2>
+        <p>Testing with crossOrigin attribute:</p>
+        <img 
+            id="test2" 
+            class="test-image" 
+            src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/property-photos/264f4e7d-905b-4f47-a948-0facbb324b0c/1747938328808-PCI%20DSS%20v4.0.0%20Standard%20and%20Compliance%20Principles.png" 
+            alt="Test Image 2"
+            crossorigin="anonymous"
+            onerror="document.getElementById('test2-result').innerHTML = 'ERROR: Image failed to load'; document.getElementById('test2-result').className = 'error';"
+            onload="document.getElementById('test2-result').innerHTML = 'SUCCESS: Image loaded correctly'; document.getElementById('test2-result').className = 'success';"
+        >
+        <p id="test2-result">Loading...</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 3: Background Image</h2>
+        <p>Testing with CSS background-image:</p>
+        <div 
+            id="test3" 
+            style="width: 100%; height: 200px; background-size: contain; background-position: center; background-repeat: no-repeat; background-image: url('https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/property-photos/264f4e7d-905b-4f47-a948-0facbb324b0c/1747938328808-PCI%20DSS%20v4.0.0%20Standard%20and%20Compliance%20Principles.png');"
+        ></div>
+        <p>Note: There's no reliable way to detect if a background image loaded successfully in plain HTML/CSS.</p>
+    </div>
+
+    <div class="test-container">
+        <h2>Test 4: Fetch API</h2>
+        <p>Testing with JavaScript Fetch API:</p>
+        <div id="test4-result">Testing...</div>
+        <script>
+            fetch('https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/property-photos/264f4e7d-905b-4f47-a948-0facbb324b0c/1747938328808-PCI%20DSS%20v4.0.0%20Standard%20and%20Compliance%20Principles.png')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    document.getElementById('test4-result').innerHTML = `SUCCESS: Fetch succeeded with status ${response.status}`;
+                    document.getElementById('test4-result').className = 'success';
+                    return response.blob();
+                })
+                .then(blob => {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(blob);
+                    img.className = 'test-image';
+                    document.getElementById('test4-result').after(img);
+                })
+                .catch(error => {
+                    document.getElementById('test4-result').innerHTML = `ERROR: ${error.message}`;
+                    document.getElementById('test4-result').className = 'error';
+                });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "id": "checkpoint_1748463557874_dbcw88uh3",
+  "name": "Auto-checkpoint 10:19:17 PM",
+  "timestamp": "2025-05-28T20:19:25.940Z",
+  "description": "Automatic checkpoint after 5 changes:\nadd: .qapt-coder\\checkpoints\\checkpoint_1748463541062_uo3hpg9d5.metadata.json\nunlink: .qapt-coder\\checkpoints\\checkpoint_1748463056517_tzm56u2qx.zip\nunlink: .qapt-coder\\checkpoints\\checkpoint_1748463056517_tzm56u2qx.metadata.json\nadd: .qapt-coder\\checkpoints\\checkpoint_1748463552782_7euoh93b9.zip\nchange: .qapt-coder\\checkpoints\\checkpoint_1748463552782_7euoh93b9.zip",
+  "filePath": "c:\\Users\\anwar\\Documents\\qapt\\.qapt-coder\\checkpoints\\checkpoint_1748463557874_dbcw88uh3.zip",
+  "fileCount": 526,
+  "size": 695125,
+  "changes": []
+}

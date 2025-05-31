@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            display: block;
+            margin: 10px 0;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct Image Test</h1>
+    
+    <div class="test-container">
+        <h2>Test Direct Image URL</h2>
+        <p>Enter the storage_path from your database:</p>
+        <input type="text" id="storagePath" placeholder="e.g., 264f4e7d-905b-4f47-a948-0facbb324b0c/1747938535446-istockphoto-1396856251-612x612.jpg">
+        <button onclick="testImage()">Test Image</button>
+        
+        <div id="imageResult" style="margin-top: 20px;">
+            <!-- Image will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        function testImage() {
+            const storagePath = document.getElementById('storagePath').value.trim();
+            if (!storagePath) {
+                alert('Please enter a storage path');
+                return;
+            }
+            
+            const imageResult = document.getElementById('imageResult');
+            imageResult.innerHTML = '<p>Testing image...</p>';
+            
+            // Construct the URL
+            const directUrl = `https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/image_url/${storagePath}`;
+            
+            // Create image element
+            const img = document.createElement('img');
+            img.className = 'test-image';
+            img.alt = 'Test Image';
+            
+            // Add load and error handlers
+            img.onload = function() {
+                imageResult.innerHTML = `
+                    <p class="success">Image loaded successfully!</p>
+                    <p>URL: <a href="${directUrl}" target="_blank">${directUrl}</a></p>
+                `;
+                imageResult.appendChild(img);
+            };
+            
+            img.onerror = function() {
+                imageResult.innerHTML = `
+                    <p class="error">Failed to load image!</p>
+                    <p>URL: <a href="${directUrl}" target="_blank">${directUrl}</a></p>
+                    <p>Possible reasons:</p>
+                    <ul>
+                        <li>The file doesn't exist at this path</li>
+                        <li>CORS is not configured correctly</li>
+                        <li>The bucket is not public</li>
+                        <li>The storage policies are not set up correctly</li>
+                    </ul>
+                `;
+            };
+            
+            // Set the source to start loading
+            img.src = directUrl;
+        }
+    </script>
+</body>
+</html>

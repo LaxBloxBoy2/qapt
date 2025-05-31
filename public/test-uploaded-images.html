@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Uploaded Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-image {
+            max-width: 300px;
+            max-height: 200px;
+            border: 1px solid #ccc;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .image-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .image-container {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            margin-bottom: 10px;
+        }
+        .image-info {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Uploaded Images</h1>
+
+    <div class="test-section">
+        <h2>Recently Uploaded Test Images</h2>
+        <p>These are the images that were uploaded by the test script:</p>
+
+        <div class="image-grid">
+            <!-- Image URL Bucket -->
+            <div class="image-card">
+                <h3>image_url bucket</h3>
+                <div class="image-container">
+                    <img
+                        src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/image_url/test-image-1747963527031.png"
+                        alt="Test Image (image_url)"
+                        class="test-image"
+                        referrerpolicy="no-referrer"
+                        onerror="this.onerror=null; this.src='/placeholder-image.svg'; this.nextElementSibling.innerHTML='Failed to load';"
+                    />
+                </div>
+                <div class="image-info">
+                    <p>Bucket: image_url</p>
+                    <p>Status: <span id="status-image-url">Loading...</span></p>
+                </div>
+            </div>
+
+            <!-- Property Photos Bucket -->
+            <div class="image-card">
+                <h3>property-photos bucket</h3>
+                <div class="image-container">
+                    <img
+                        src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/property-photos/test-image-1747963527443.png"
+                        alt="Test Image (property-photos)"
+                        class="test-image"
+                        referrerpolicy="no-referrer"
+                        onerror="this.onerror=null; this.src='/placeholder-image.svg'; this.nextElementSibling.innerHTML='Failed to load';"
+                    />
+                </div>
+                <div class="image-info">
+                    <p>Bucket: property-photos</p>
+                    <p>Status: <span id="status-property-photos">Loading...</span></p>
+                </div>
+            </div>
+
+            <!-- Appliance Files Bucket -->
+            <div class="image-card">
+                <h3>appliance-files bucket</h3>
+                <div class="image-container">
+                    <img
+                        src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/appliance-files/test-image-1747963527640.png"
+                        alt="Test Image (appliance-files)"
+                        class="test-image"
+                        referrerpolicy="no-referrer"
+                        onerror="this.onerror=null; this.src='/placeholder-image.svg'; this.nextElementSibling.innerHTML='Failed to load';"
+                    />
+                </div>
+                <div class="image-info">
+                    <p>Bucket: appliance-files</p>
+                    <p>Status: <span id="status-appliance-files">Loading...</span></p>
+                </div>
+            </div>
+
+            <!-- Inspection Media Bucket -->
+            <div class="image-card">
+                <h3>inspection-media bucket</h3>
+                <div class="image-container">
+                    <img
+                        src="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/inspection-media/test-image-1747963527844.png"
+                        alt="Test Image (inspection-media)"
+                        class="test-image"
+                        referrerpolicy="no-referrer"
+                        onerror="this.onerror=null; this.src='/placeholder-image.svg'; this.nextElementSibling.innerHTML='Failed to load';"
+                    />
+                </div>
+                <div class="image-info">
+                    <p>Bucket: inspection-media</p>
+                    <p>Status: <span id="status-inspection-media">Loading...</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Your Own Image URL</h2>
+        <p>Enter a Supabase image URL to test if it loads correctly:</p>
+        <input type="text" id="custom-url" placeholder="https://auaytfzunufzzkurjlol.supabase.co/storage/v1/object/public/image_url/your-image.jpg">
+        <button onclick="testCustomImage()">Test Image</button>
+        <div id="custom-image-display"></div>
+    </div>
+
+    <script>
+        // Check image loading status
+        window.addEventListener('load', function() {
+            // Test image_url bucket
+            const imageUrlImg = document.querySelector('.image-card:nth-child(1) img');
+            imageUrlImg.onload = function() {
+                document.getElementById('status-image-url').textContent = 'Loaded successfully';
+                document.getElementById('status-image-url').className = 'success';
+            };
+            imageUrlImg.onerror = function() {
+                document.getElementById('status-image-url').textContent = 'Failed to load';
+                document.getElementById('status-image-url').className = 'error';
+            };
+
+            // Test property-photos bucket
+            const propertyPhotosImg = document.querySelector('.image-card:nth-child(2) img');
+            propertyPhotosImg.onload = function() {
+                document.getElementById('status-property-photos').textContent = 'Loaded successfully';
+                document.getElementById('status-property-photos').className = 'success';
+            };
+            propertyPhotosImg.onerror = function() {
+                document.getElementById('status-property-photos').textContent = 'Failed to load';
+                document.getElementById('status-property-photos').className = 'error';
+            };
+
+            // Test appliance-files bucket
+            const applianceFilesImg = document.querySelector('.image-card:nth-child(3) img');
+            applianceFilesImg.onload = function() {
+                document.getElementById('status-appliance-files').textContent = 'Loaded successfully';
+                document.getElementById('status-appliance-files').className = 'success';
+            };
+            applianceFilesImg.onerror = function() {
+                document.getElementById('status-appliance-files').textContent = 'Failed to load';
+                document.getElementById('status-appliance-files').className = 'error';
+            };
+
+            // Test inspection-media bucket
+            const inspectionMediaImg = document.querySelector('.image-card:nth-child(4) img');
+            inspectionMediaImg.onload = function() {
+                document.getElementById('status-inspection-media').textContent = 'Loaded successfully';
+                document.getElementById('status-inspection-media').className = 'success';
+            };
+            inspectionMediaImg.onerror = function() {
+                document.getElementById('status-inspection-media').textContent = 'Failed to load';
+                document.getElementById('status-inspection-media').className = 'error';
+            };
+        });
+
+        // Test a custom image URL
+        function testCustomImage() {
+            const imageUrl = document.getElementById('custom-url').value;
+            const container = document.getElementById('custom-image-display');
+
+            if (!imageUrl) {
+                container.innerHTML = '<p class="error">Please enter a URL</p>';
+                return;
+            }
+
+            container.innerHTML = '<p>Loading image...</p>';
+
+            const img = new Image();
+            img.onload = function() {
+                container.innerHTML = '';
+                container.appendChild(img);
+                container.innerHTML += '<p class="success">SUCCESS: Image loaded correctly</p>';
+            };
+            img.onerror = function() {
+                container.innerHTML = '<p class="error">ERROR: Image failed to load</p>';
+            };
+            img.referrerPolicy = 'no-referrer';
+            img.src = imageUrl;
+            img.className = 'test-image';
+            img.alt = 'Custom Test Image';
+        }
+    </script>
+</body>
+</html>

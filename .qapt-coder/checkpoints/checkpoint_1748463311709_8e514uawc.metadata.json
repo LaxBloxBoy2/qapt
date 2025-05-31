@@ -1,0 +1,10 @@
+{
+  "id": "checkpoint_1748463311709_8e514uawc",
+  "name": "Auto-checkpoint 10:15:11 PM",
+  "timestamp": "2025-05-28T20:15:41.988Z",
+  "description": "Automatic checkpoint after 134 changes:\nadd: .qapt-coder\\checkpoints\\checkpoint_1748463270740_kb0lwigq3.metadata.json\nchange: .next\\cache\\webpack\\server-development\\11.pack.gz_\nchange: .next\\cache\\webpack\\server-development\\13.pack.gz_\nchange: .next\\cache\\webpack\\server-development\\15.pack.gz_\nchange: .next\\cache\\webpack\\server-development\\index.pack.gz_\n...",
+  "filePath": "c:\\Users\\anwar\\Documents\\qapt\\.qapt-coder\\checkpoints\\checkpoint_1748463311709_8e514uawc.zip",
+  "fileCount": 526,
+  "size": 695125,
+  "changes": []
+}
