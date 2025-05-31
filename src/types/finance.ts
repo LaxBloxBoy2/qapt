@@ -137,7 +137,7 @@ export const transactionSchema = z.object({
   paid_date: z.string().optional().or(z.literal("")),
   payment_method: z.enum(['cash', 'check', 'bank_transfer', 'credit_card', 'online', 'other']).optional(),
   reference_id: z.string().optional(),
-  is_recurring: z.boolean().default(false),
+  is_recurring: z.boolean(),
   recurring_frequency: z.enum(['weekly', 'monthly', 'quarterly', 'yearly']).optional(),
   recurring_end_date: z.string().optional().or(z.literal("")),
   description: z.string().optional(),
