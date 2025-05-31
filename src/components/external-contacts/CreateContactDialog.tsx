@@ -53,7 +53,7 @@ const createContactSchema = z.object({
   minimum_charge: z.string().optional(),
   rating: z.string().optional(),
   notes: z.string().optional(),
-  emergency_contact: z.boolean().default(false),
+  emergency_contact: z.boolean(),
   emergency_phone: z.string().optional(),
   preferred_contact_method: z.enum(["email", "phone", "mobile", "text"]).optional(),
 });
