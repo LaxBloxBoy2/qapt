@@ -150,14 +150,14 @@ export function ApplianceForm({ appliance, propertyId, onSuccess }: ApplianceFor
       // Clean up date fields - remove empty strings to avoid SQL errors
       const cleanedData = {
         ...data,
-        // If installation_date is an empty string, set it to null
+        // If installation_date is an empty string, set it to undefined
         installation_date: data.installation_date && data.installation_date.trim() !== ""
           ? data.installation_date
-          : null,
-        // If warranty_expiration is an empty string, set it to null
+          : undefined,
+        // If warranty_expiration is an empty string, set it to undefined
         warranty_expiration: data.warranty_expiration && data.warranty_expiration.trim() !== ""
           ? data.warranty_expiration
-          : null
+          : undefined
       };
 
       console.log("Submitting appliance with data:", cleanedData);
@@ -397,7 +397,7 @@ export function ApplianceForm({ appliance, propertyId, onSuccess }: ApplianceFor
                           <Calendar
                             mode="single"
                             selected={field.value ? new Date(field.value) : undefined}
-                            onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : null)}
+                            onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : undefined)}
                             initialFocus
                           />
                         </PopoverContent>
@@ -473,7 +473,7 @@ export function ApplianceForm({ appliance, propertyId, onSuccess }: ApplianceFor
                             <Calendar
                               mode="single"
                               selected={field.value ? new Date(field.value) : undefined}
-                              onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : null)}
+                              onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : undefined)}
                               initialFocus
                             />
                           </PopoverContent>
