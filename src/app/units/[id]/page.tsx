@@ -30,7 +30,7 @@ function UnitDetailPage({ params }: UnitDetailPageProps) {
         id: unit.id,
         type: 'unit',
         title: unit.name,
-        subtitle: unit.properties?.name ? `${unit.properties.name} • ${unit.properties.address}` : 'Unknown Property',
+        subtitle: `Unit ID: ${unit.id}`,
         url: `/units/${unit.id}`,
         icon: 'ri-home-line'
       });
