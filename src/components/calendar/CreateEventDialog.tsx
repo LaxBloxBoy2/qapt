@@ -36,10 +36,10 @@ const createEventSchema = z.object({
   date: z.string().min(1, "Date is required"),
   endDate: z.string().optional(),
   time: z.string().optional(),
-  allDay: z.boolean().default(true),
+  allDay: z.boolean(),
   propertyId: z.string().optional(),
   unitId: z.string().optional(),
-  isRecurring: z.boolean().default(false),
+  isRecurring: z.boolean(),
   recurringPattern: z.enum(["daily", "weekly", "monthly", "yearly"]).optional(),
   reminderMinutes: z.string().optional(),
 });
