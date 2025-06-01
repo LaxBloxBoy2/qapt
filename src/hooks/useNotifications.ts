@@ -112,8 +112,8 @@ export function useGetNotificationStats() {
       };
 
       notifications.forEach(notification => {
-        stats.by_type[notification.type]++;
-        stats.by_priority[notification.priority]++;
+        stats.by_type[notification.type as keyof typeof stats.by_type]++;
+        stats.by_priority[notification.priority as keyof typeof stats.by_priority]++;
       });
 
       return stats;

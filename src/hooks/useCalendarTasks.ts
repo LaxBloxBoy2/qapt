@@ -101,7 +101,7 @@ export function useCalendarTasks() {
 
       // Separate into upcoming and overdue
       const upcoming = tasks.filter(task => task.days_overdue === 0);
-      const overdue = tasks.filter(task => task.days_overdue > 0);
+      const overdue = tasks.filter(task => task.days_overdue && task.days_overdue > 0);
 
       return {
         upcoming,

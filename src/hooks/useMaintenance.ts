@@ -8,6 +8,8 @@ import {
   CreateMaintenanceRequest,
   UpdateMaintenanceRequest,
   MaintenanceComment,
+  MaintenanceAttachment,
+  MaintenanceStatusHistory,
   Assignee,
 } from "@/types/maintenance";
 
@@ -1017,7 +1019,7 @@ export function useUpdateMaintenanceMaterials() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ requestId, materials }: { requestId: string; materials: any[] }) => {
+    mutationFn: async ({ requestId, materials }: { requestId: string; materials: unknown[] }) => {
       console.log('Updating materials for request:', requestId, materials);
 
       const { data, error } = await supabase
@@ -1083,7 +1085,7 @@ export function useUpdateMaintenanceEquipment() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async ({ requestId, equipment }: { requestId: string; equipment: any[] }) => {
+    mutationFn: async ({ requestId, equipment }: { requestId: string; equipment: unknown[] }) => {
       console.log('Updating equipment for request:', requestId, equipment);
 
       const { data, error } = await supabase

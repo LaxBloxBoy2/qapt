@@ -25,9 +25,11 @@ export function useDocuments(filters?: DocumentFilters) {
             name,
             category,
             description,
+            file_name,
             file_url,
             file_size,
             file_type,
+            storage_path,
             status,
             property_id,
             lease_id,
@@ -135,10 +137,17 @@ export function useDocuments(filters?: DocumentFilters) {
         const documentsWithRelations: DocumentWithRelations[] = documents.map(doc => ({
           ...doc,
           property: doc.property_id ? propertiesMap.get(doc.property_id) : undefined,
-          lease: doc.lease_id ? leasesMap.get(doc.lease_id) : undefined,
+          lease: doc.lease_id ? (() => {
+            const lease = leasesMap.get(doc.lease_id);
+            if (!lease) return undefined;
+            return {
+              ...lease,
+              unit: Array.isArray(lease.unit) ? lease.unit[0] : lease.unit
+            };
+          })() : undefined,
           tenant: doc.tenant_id ? tenantsMap.get(doc.tenant_id) : undefined,
           uploader: uploadersMap.get(doc.uploaded_by)
-        }));
+        })) as DocumentWithRelations[];
 
         return documentsWithRelations;
       } catch (error) {
@@ -322,8 +331,8 @@ const uploadDocumentFile = async (file: File, documentId: string): Promise<{ url
 
     if (uploadError) {
       console.error("All upload attempts failed:", {
-        message: uploadError.message,
-        statusCode: uploadError.statusCode,
+        message: (uploadError as any)?.message || 'Unknown error',
+        statusCode: (uploadError as any)?.statusCode || 'Unknown',
         error: uploadError
       });
 
@@ -378,6 +387,7 @@ export function useCreateDocument() {
           name: input.name,
           category: input.category,
           description: input.description,
+          file_name: input.file.name,
           file_size: input.file.size,
           file_type: input.file.type,
           status: "active",

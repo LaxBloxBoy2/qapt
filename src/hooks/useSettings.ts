@@ -178,13 +178,13 @@ export function useAppPreferences() {
       console.log('Fetching preferences for user:', user.id);
 
       const defaultPrefs = {
-        currency: 'USD',
-        date_format: 'MM/DD/YYYY',
+        currency: 'USD' as const,
+        date_format: 'MM/DD/YYYY' as const,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        language: 'en',
-        theme: 'system',
+        language: 'en' as const,
+        theme: 'system' as const,
         default_country: 'US',
-        default_rent_status: 'active',
+        default_rent_status: 'active' as const,
         default_lease_term: 12,
         default_currency_symbol: '$',
       };

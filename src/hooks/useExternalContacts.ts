@@ -4,7 +4,8 @@ import {
   ExternalContact,
   CreateExternalContactData,
   UpdateExternalContactData,
-  ExternalContactFilters
+  ExternalContactFilters,
+  ContactStatus
 } from "@/types/external-contacts";
 
 // Fetch all external contacts with optional filters
@@ -70,7 +71,7 @@ export const useExternalContacts = (filters?: ExternalContactFilters) => {
           email: sp.email,
           phone: sp.phone,
           services_offered: sp.specialties || [],
-          status: sp.is_active ? 'active' : 'inactive',
+          status: (sp.is_active ? 'active' : 'inactive') as ContactStatus,
           rating: sp.rating,
           emergency_contact: sp.emergency_contact || false,
           created_at: sp.created_at,
@@ -176,7 +177,7 @@ export const useUpdateExternalContact = () => {
         email: result.data.email,
         phone: result.data.phone,
         services_offered: result.data.specialties || [],
-        status: result.data.is_active ? 'active' : 'inactive',
+        status: (result.data.is_active ? 'active' : 'inactive') as ContactStatus,
         rating: result.data.rating || 0,
         emergency_contact: false,
         created_at: result.data.created_at,

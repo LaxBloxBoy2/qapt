@@ -2,6 +2,13 @@ import { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import Head from 'next/head';
 
+// Extend Window interface to include content property
+declare global {
+  interface Window {
+    content?: any;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   // Initialize any global scripts or polyfills
   useEffect(() => {

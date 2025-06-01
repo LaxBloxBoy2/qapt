@@ -5,6 +5,7 @@ import {
   Inspection,
   InspectionCreateInput,
   InspectionUpdateInput,
+  InspectionFormValues,
   InspectionSection,
   InspectionCondition,
   InspectionMedia,
@@ -332,11 +333,11 @@ export function useCreateInspection() {
       console.log("Creating sections for inspection:", inspectionData.id);
       console.log("Required sections:", inspection.required_sections);
 
-      const sectionPromises = inspection.required_sections.map(async (sectionType, index) => {
+      const sectionPromises = inspection.required_sections.map(async (sectionType: string, index: number) => {
         try {
           // Generate a name based on the section type (e.g., "Bedroom 1", "Bedroom 2")
-          const sectionCount = inspection.required_sections.filter(s => s === sectionType).length;
-          const sectionIndex = inspection.required_sections.filter(s => s === sectionType).indexOf(sectionType) + 1;
+          const sectionCount = inspection.required_sections.filter((s: string) => s === sectionType).length;
+          const sectionIndex = inspection.required_sections.filter((s: string) => s === sectionType).indexOf(sectionType as any) + 1;
 
           let sectionName = "";
 

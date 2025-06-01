@@ -4,6 +4,7 @@ import { useToast } from "@/hooks/use-toast";
 import {
   CalendarEvent,
   CalendarEventType,
+  CalendarEventStatus,
   CalendarFilters,
   CalendarSummary,
   CreateCustomEvent,
@@ -78,9 +79,9 @@ export function useCalendarEvents(filters?: CalendarFilters) {
                 backgroundColor: config.backgroundColor,
                 borderColor: config.borderColor,
                 icon: config.icon,
-                status: request.status === 'resolved' ? 'completed' :
+                status: (request.status === 'resolved' ? 'completed' :
                        request.status === 'cancelled' ? 'cancelled' :
-                       new Date(request.due_date) < new Date() ? 'overdue' : 'upcoming',
+                       new Date(request.due_date) < new Date() ? 'overdue' : 'upcoming') as CalendarEventStatus,
                 relatedId: request.id,
                 relatedType: 'maintenance_request',
                 propertyId: request.property_id,
@@ -128,7 +129,7 @@ export function useCalendarEvents(filters?: CalendarFilters) {
               backgroundColor: config.backgroundColor,
               borderColor: config.borderColor,
               icon: config.icon,
-              status: event.status || 'upcoming',
+              status: (event.status || 'upcoming') as CalendarEventStatus,
               relatedId: event.id,
               relatedType: 'custom_event',
               propertyId: event.property_id,

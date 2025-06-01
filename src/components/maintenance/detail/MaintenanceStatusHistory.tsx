@@ -10,11 +10,11 @@ interface StatusHistoryEntry {
   id: string;
   from_status?: string;
   to_status: string;
-  changed_by: {
+  changed_by?: {
     name: string;
     type: 'staff' | 'system';
   };
-  changed_at: string;
+  created_at: string;
   notes?: string;
 }
 
@@ -83,7 +83,7 @@ export function MaintenanceStatusHistory({ requestId }: MaintenanceStatusHistory
                   </div>
 
                   <p className="text-sm font-medium">
-                    {getChangeDescription(entry)}
+                    {getChangeDescription(entry as StatusHistoryEntry)}
                   </p>
 
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
