@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { useMaintenanceMaterials, useUpdateMaintenanceMaterials } from "@/hooks/useMaintenance";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface Material {
   id: string;
@@ -45,6 +46,7 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
     pricePerUnit: 0,
     supplier: "",
   });
+  const { formatCurrency } = useCurrencyFormatter();
 
   // Use real database hooks
   const { data: materials = [], isLoading } = useMaintenanceMaterials(requestId);
@@ -117,13 +119,6 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
 
   const getTotalCost = () => {
     return materials.reduce((sum: number, material: Material) => sum + material.total, 0);
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
   };
 
   return (

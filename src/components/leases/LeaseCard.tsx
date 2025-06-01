@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { LeaseForm } from "./LeaseForm";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface LeaseCardProps {
   lease: LeaseWithRelations;
@@ -37,6 +38,7 @@ export function LeaseCard({ lease }: LeaseCardProps) {
   const deleteLease = useDeleteLease();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { formatCurrency } = useCurrencyFormatter();
 
   // Format dates
   const startDate = format(parseISO(lease.start_date), "MMM d, yyyy");
@@ -63,14 +65,6 @@ export function LeaseCard({ lease }: LeaseCardProps) {
   };
 
   const currentStatus = getLeaseStatus();
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
 
   // Helper function to get deposit amount regardless of column name
   const getDepositAmount = (lease: any) => {

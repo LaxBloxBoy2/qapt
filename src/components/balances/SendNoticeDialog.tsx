@@ -28,6 +28,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSendNotice, useOutstandingInvoices } from "@/hooks/useBalances";
 import { useTenants } from "@/hooks/useTenants";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 const sendNoticeSchema = z.object({
   subject: z.string().min(1, "Subject is required"),
@@ -50,6 +51,7 @@ export function SendNoticeDialog({ open, onOpenChange, tenantId }: SendNoticeDia
   const sendNotice = useSendNotice();
   const { data: tenants } = useTenants();
   const { data: outstandingInvoices } = useOutstandingInvoices(tenantId);
+  const { formatCurrency } = useCurrencyFormatter();
 
   const tenant = tenants?.find(t => t.id === tenantId);
 
@@ -75,7 +77,7 @@ export function SendNoticeDialog({ open, onOpenChange, tenantId }: SendNoticeDia
       form.setValue("subject", `Outstanding Balance Notice - ${tenantName}`);
       form.setValue("message", `Dear ${tenantName},
 
-We hope this message finds you well. We are writing to inform you that your account currently has an outstanding balance of $${totalOutstanding.toFixed(2)}.
+We hope this message finds you well. We are writing to inform you that your account currently has an outstanding balance of ${formatCurrency(totalOutstanding)}.
 
 Please review the attached invoice summary and arrange for payment at your earliest convenience. If you have any questions or concerns regarding this balance, please don't hesitate to contact us.
 
@@ -84,14 +86,7 @@ We appreciate your prompt attention to this matter.
 Best regards,
 Property Management Team`);
     }
-  }, [tenant, outstandingInvoices, open, form]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
+  }, [tenant, outstandingInvoices, open, form, formatCurrency]);
 
   const onSubmit = async (data: SendNoticeForm) => {
     if (!tenantId) return;

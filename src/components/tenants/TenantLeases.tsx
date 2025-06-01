@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface TenantLeasesProps {
   tenantId: string;
@@ -38,6 +39,7 @@ interface LeaseData {
 
 export function TenantLeases({ tenantId }: TenantLeasesProps) {
   const router = useRouter();
+  const { formatCurrency } = useCurrencyFormatter();
 
   const { data: leases, isLoading, error: queryError } = useQuery({
     queryKey: ["tenant-leases", tenantId],
@@ -145,14 +147,6 @@ export function TenantLeases({ tenantId }: TenantLeasesProps) {
       default:
         return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300';
     }
-  };
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
   };
 
   if (isLoading) {

@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface Transaction {
   id: string;
@@ -28,13 +29,7 @@ interface MaintenanceTransactionsSectionProps {
 
 export function MaintenanceTransactionsSection({ requestId }: MaintenanceTransactionsSectionProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
+  const { formatCurrency } = useCurrencyFormatter();
 
   const getTransactionIcon = (type: string) => {
     switch (type) {

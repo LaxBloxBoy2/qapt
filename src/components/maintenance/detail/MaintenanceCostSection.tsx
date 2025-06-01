@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { TransactionForm } from "@/components/finances/TransactionForm";
 import { MaintenanceRequest } from "@/types/maintenance";
 import { useMaintenanceTransactions } from "@/hooks/useFinances";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface MaintenanceCostSectionProps {
   request: MaintenanceRequest;
@@ -24,17 +25,10 @@ export function MaintenanceCostSection({ request }: MaintenanceCostSectionProps)
   const [isTransactionFormOpen, setIsTransactionFormOpen] = useState(false);
   const [transactionType, setTransactionType] = useState<"income" | "expense">("expense");
   const [transactionSubtype, setTransactionSubtype] = useState<string>("invoice");
+  const { formatCurrency } = useCurrencyFormatter();
 
   // Fetch transactions related to this maintenance request
   const { data: transactions = [], isLoading: transactionsLoading } = useMaintenanceTransactions(request.id);
-
-  const formatCurrency = (amount: number | null | undefined) => {
-    if (!amount) return "$0.00";
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
 
   const handleAddCost = (type: "income" | "expense", subtype: string) => {
     setTransactionType(type);
