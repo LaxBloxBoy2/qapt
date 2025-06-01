@@ -38,6 +38,7 @@ import {
 import { TransactionWithRelations } from "@/types/finance";
 import { useDeleteTransaction, useUpdateTransaction } from "@/hooks/useFinances";
 import { format } from "date-fns";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface TransactionTableProps {
   transactions: TransactionWithRelations[];
@@ -54,13 +55,7 @@ export function TransactionTable({ transactions, isLoading }: TransactionTablePr
 
   const deleteTransaction = useDeleteTransaction();
   const updateTransaction = useUpdateTransaction();
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
+  const { formatCurrency } = useCurrencyFormatter();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "-";

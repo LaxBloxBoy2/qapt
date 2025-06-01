@@ -21,6 +21,7 @@ import {
 } from "@/hooks/useBalances";
 import { useTenants } from "@/hooks/useTenants";
 import { DepositApplication } from "@/types/balance";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface ApplyDepositsDialogProps {
   open: boolean;
@@ -36,15 +37,9 @@ export function ApplyDepositsDialog({ open, onOpenChange, tenantId }: ApplyDepos
   const { data: tenants } = useTenants();
   const { data: deposits } = useTenantDeposits(tenantId);
   const { data: outstandingInvoices } = useOutstandingInvoices(tenantId);
+  const { formatCurrency } = useCurrencyFormatter();
 
   const tenant = tenants?.find(t => t.id === tenantId);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
 
   const handleApplicationChange = (depositId: string, invoiceId: string, amount: number) => {
     setApplications(prev => {

@@ -6,6 +6,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import { withAuth } from "@/components/auth/withAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 function MinimalLeasesPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -13,6 +14,7 @@ function MinimalLeasesPage() {
   const [leases, setLeases] = useState<any[]>([]);
   const [dbStatus, setDbStatus] = useState<any>({});
   const supabase = createClientComponentClient();
+  const { formatCurrency } = useCurrencyFormatter();
 
   // Check database status
   useEffect(() => {
@@ -95,17 +97,6 @@ function MinimalLeasesPage() {
     } catch (error) {
       return "Invalid date";
     }
-  };
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    if (amount === undefined || amount === null) return "N/A";
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
   };
 
   return (

@@ -20,6 +20,7 @@ import {
 } from "@/hooks/useBalances";
 import { useTenants } from "@/hooks/useTenants";
 import { CreditApplication } from "@/types/balance";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface ApplyCreditsDialogProps {
   open: boolean;
@@ -35,15 +36,9 @@ export function ApplyCreditsDialog({ open, onOpenChange, tenantId }: ApplyCredit
   const { data: tenants } = useTenants();
   const { data: credits } = useTenantCredits(tenantId);
   const { data: outstandingInvoices } = useOutstandingInvoices(tenantId);
+  const { formatCurrency } = useCurrencyFormatter();
 
   const tenant = tenants?.find(t => t.id === tenantId);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
 
   const handleApplicationChange = (creditId: string, invoiceId: string, amount: number) => {
     setApplications(prev => {

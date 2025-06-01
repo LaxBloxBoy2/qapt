@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BalancesSummary } from "@/types/balance";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface BalancesSummaryCardsProps {
   summary?: BalancesSummary;
@@ -8,12 +9,7 @@ interface BalancesSummaryCardsProps {
 }
 
 export function BalancesSummaryCards({ summary, isLoading }: BalancesSummaryCardsProps) {
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
+  const { formatCurrency } = useCurrencyFormatter();
 
   if (isLoading) {
     return (

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface LeaseDetailProps {
   leaseId: string;
@@ -37,6 +38,7 @@ export function LeaseDetail({ leaseId }: LeaseDetailProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const { formatCurrency } = useCurrencyFormatter();
 
   // Track recently viewed
   useEffect(() => {
@@ -72,14 +74,6 @@ export function LeaseDetail({ leaseId }: LeaseDetailProps) {
       console.error("Error formatting date:", error, "Date string:", dateString);
       return "Invalid date";
     }
-  };
-
-  // Format currency
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
   };
 
   // Helper function to get deposit amount regardless of column name

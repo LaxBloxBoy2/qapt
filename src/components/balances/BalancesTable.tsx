@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { TenantBalance } from "@/types/balance";
 import { format } from "date-fns";
+import { useCurrencyFormatter } from "@/lib/currency";
 
 interface BalancesTableProps {
   balances: TenantBalance[];
@@ -43,13 +44,7 @@ export function BalancesTable({
   const router = useRouter();
   const [sortField, setSortField] = useState<string>("outstanding_balance");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  };
+  const { formatCurrency } = useCurrencyFormatter();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "-";
