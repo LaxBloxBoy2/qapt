@@ -119,3 +119,10 @@ export default function Maintenance() {
     </div>
   );
 }
+
+// Force server-side rendering to avoid static generation issues
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}

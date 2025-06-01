@@ -3,6 +3,10 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: false, // Set to false to avoid double-rendering in development
   swcMinify: true,
+  // Disable static generation for pages that use React Query
+  experimental: {
+    esmExternals: false,
+  },
   // Add custom webpack configuration
   webpack: (config, { isServer }) => {
     // Fix for missing files

@@ -139,3 +139,10 @@ export default function Calendar() {
     </div>
   );
 }
+
+// Force server-side rendering to avoid static generation issues
+export async function getServerSideProps() {
+  return {
+    props: {},
+  };
+}
