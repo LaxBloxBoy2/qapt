@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
+import { useUser } from "@/contexts/UserContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "remixicon/fonts/remixicon.css";
 
 interface TopbarProps {
@@ -12,6 +14,7 @@ interface TopbarProps {
 export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
+  const { user, profile } = useUser();
 
   // Function to get the page title based on the current path
   const getPageTitle = () => {
@@ -26,10 +29,35 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Get user initials for avatar
+  const getInitials = () => {
+    if (profile?.full_name) {
+      return profile.full_name
+        .split(' ')
+        .map(name => name.charAt(0))
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    return user?.email?.charAt(0).toUpperCase() || 'U';
+  };
+
+  // Get display name
+  const getDisplayName = () => {
+    return profile?.full_name || user?.email?.split('@')[0] || 'User';
+  };
+
   return (
     <div className="topbar">
-      <div>
+      {/* Left side - Page title and weather */}
+      <div className="flex flex-col gap-1">
         <h1 className="text-xl font-semibold">{getPageTitle()}</h1>
+        {/* Weather section */}
+        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <i className="ri-sun-line text-orange-500" />
+          <span className="font-medium">30°C</span>
+          <span>Soleggiato</span>
+        </div>
       </div>
 
       <div className="flex items-center gap-4">
@@ -63,10 +91,19 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
           <i className="ri-question-line text-gray-600 dark:text-gray-300" />
         </button>
 
-        <button className="btn-primary">
-          <i className="ri-add-line mr-1" />
-          Add new property
-        </button>
+        {/* Profile section - similar to sidebar */}
+        <div className="flex items-center gap-3 pl-2 border-l border-gray-200 dark:border-gray-700">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={user?.user_metadata?.avatar_url} alt={getDisplayName()} />
+            <AvatarFallback className="bg-primary text-primary-foreground text-sm">
+              {getInitials()}
+            </AvatarFallback>
+          </Avatar>
+          <div className="hidden md:block">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">{getDisplayName()}</p>
+            <p className="text-xs text-gray-600 dark:text-gray-400 capitalize">{profile?.role || 'Admin'}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
