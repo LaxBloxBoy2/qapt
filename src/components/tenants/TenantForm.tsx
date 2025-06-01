@@ -54,7 +54,7 @@ const tenantFormSchema = z.object({
   secondary_email: z.string().email("Invalid email address").optional().or(z.literal("")),
   phone: z.string().optional(),
   secondary_phone: z.string().optional(),
-  is_company: z.boolean().default(false),
+  is_company: z.boolean(),
   company_name: z.string().optional(),
   date_of_birth: z.date().optional(),
   forwarding_address: z.string().optional(),

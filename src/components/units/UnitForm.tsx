@@ -50,7 +50,7 @@ export function UnitForm({ unit, propertyId, onSuccess }: UnitFormProps) {
   }, []);
 
   // Always use 'vacant' for new units
-  const defaultStatus = "vacant";
+  const defaultStatus = "vacant" as const;
 
   // Initialize form with default values
   const form = useForm<UnitFormValues>({

@@ -13,13 +13,13 @@ export const propertySchema = z.object({
   year_built: z.coerce.number().int().positive().optional(),
   mls_number: z.string().optional(),
   type: z.enum(propertyTypes),
-  is_mobile_home: z.boolean().default(false),
+  is_mobile_home: z.boolean(),
   beds: z.coerce.number().int().nonnegative().optional(),
   baths: z.coerce.number().nonnegative().optional(),
   size: z.coerce.number().nonnegative().optional(),
   market_rent: z.coerce.number().nonnegative().optional(),
   deposit: z.coerce.number().nonnegative().optional(),
-  status: z.enum(propertyStatuses).default("active"),
+  status: z.enum(propertyStatuses),
   description: z.string().optional(),
 });
 

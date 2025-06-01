@@ -228,7 +228,7 @@ export function useCreateInspection() {
   const { toast } = useToast();
 
   return useMutation({
-    mutationFn: async (inspection: InspectionCreateInput) => {
+    mutationFn: async (inspection: InspectionFormValues) => {
       console.log("Creating inspection with data:", inspection);
 
       // Validate property_id

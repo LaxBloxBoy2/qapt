@@ -16,7 +16,7 @@ export const unitSchema = z.object({
   name: z.string().min(1, "Unit name is required"),
   property_id: z.string().uuid("Property ID is required"),
   unit_type: z.enum(unitTypes),
-  status: z.enum(unitStatuses).default("vacant"),
+  status: z.enum(unitStatuses),
   description: z.string().optional(),
   beds: z.coerce.number().int().nonnegative().optional(),
   baths: z.coerce.number().nonnegative().optional(),
@@ -32,6 +32,13 @@ export interface Unit extends UnitFormValues {
   id: string;
   user_id: string;
   created_at: string;
+  // Optional property relationship for when units are fetched with property data
+  properties?: {
+    id: string;
+    name: string;
+    address?: string;
+    user_id?: string;
+  };
 }
 
 export type UnitCreateInput = {

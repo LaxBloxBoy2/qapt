@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format, isAfter, isBefore, parseISO } from "date-fns";
 import { CalendarIcon, Upload } from "lucide-react";
-import { Lease, LeaseFormValues, leaseSchema } from "@/types/lease";
+import { Lease, LeaseWithRelations, LeaseFormValues, leaseSchema } from "@/types/lease";
 import { useCreateLease, useUpdateLease } from "@/hooks/useLeases";
 import { useGetUnits } from "@/hooks/useUnits";
 import { useTenants } from "@/hooks/useTenants";
@@ -47,7 +47,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 
 interface LeaseFormProps {
-  lease?: Lease;
+  lease?: LeaseWithRelations;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   unitId?: string; // Optional unitId for pre-selecting a unit
@@ -67,7 +67,7 @@ export function LeaseForm({ lease, open, onOpenChange, unitId }: LeaseFormProps)
     resolver: zodResolver(leaseSchema),
     defaultValues: lease ? {
       unit_id: lease.unit_id || "",
-      tenant_ids: lease.tenants?.map(t => t.id) || [],
+      tenant_ids: (lease as LeaseWithRelations).tenants?.map(t => t.id) || [],
       start_date: lease.start_date || format(new Date(), "yyyy-MM-dd"),
       end_date: lease.end_date || format(new Date(new Date().setFullYear(new Date().getFullYear() + 1)), "yyyy-MM-dd"),
       rent_amount: lease.rent_amount || 0,
@@ -90,7 +90,7 @@ export function LeaseForm({ lease, open, onOpenChange, unitId }: LeaseFormProps)
   useEffect(() => {
     if (lease) {
       // Get tenant IDs from lease
-      const tenantIds = lease.tenants?.map(tenant => tenant.id) || [];
+      const tenantIds = (lease as LeaseWithRelations).tenants?.map(tenant => tenant.id) || [];
       setSelectedTenants(tenantIds);
 
       form.reset({
@@ -123,7 +123,7 @@ export function LeaseForm({ lease, open, onOpenChange, unitId }: LeaseFormProps)
   };
 
   // Handle form submission
-  const onSubmit = async (values: LeaseFormValues, isDraft: boolean = false) => {
+  const handleSubmit = async (values: LeaseFormValues, isDraft: boolean = false) => {
     setIsSubmitting(true);
     try {
       console.log("Form values before submission:", values);
@@ -180,6 +180,9 @@ export function LeaseForm({ lease, open, onOpenChange, unitId }: LeaseFormProps)
       setIsSubmitting(false);
     }
   };
+
+  // Wrapper for form submission
+  const onSubmit = (values: LeaseFormValues) => handleSubmit(values, false);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -428,7 +431,7 @@ export function LeaseForm({ lease, open, onOpenChange, unitId }: LeaseFormProps)
                     disabled={isSubmitting}
                     onClick={async () => {
                       const values = form.getValues();
-                      await onSubmit(values, true);
+                      await handleSubmit(values, true);
                     }}
                   >
                     {isSubmitting ? (

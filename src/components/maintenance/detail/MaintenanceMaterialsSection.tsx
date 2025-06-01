@@ -91,7 +91,7 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
     try {
       await updateMaterials.mutateAsync({
         requestId,
-        materials: materials.filter(m => m.id !== materialId)
+        materials: materials.filter((m: Material) => m.id !== materialId)
       });
     } catch (error) {
       // Error handling is done in the hook
@@ -104,7 +104,7 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
     try {
       await updateMaterials.mutateAsync({
         requestId,
-        materials: materials.map(material =>
+        materials: materials.map((material: Material) =>
           material.id === materialId
             ? { ...material, quantity: newQuantity, total: newQuantity * material.pricePerUnit }
             : material
@@ -116,7 +116,7 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
   };
 
   const getTotalCost = () => {
-    return materials.reduce((sum, material) => sum + material.total, 0);
+    return materials.reduce((sum: number, material: Material) => sum + material.total, 0);
   };
 
   const formatCurrency = (amount: number) => {
@@ -242,7 +242,7 @@ export function MaintenanceMaterialsSection({ requestId }: MaintenanceMaterialsS
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {materials.map((material) => (
+                  {materials.map((material: Material) => (
                     <TableRow key={material.id}>
                       <TableCell>
                         <div>

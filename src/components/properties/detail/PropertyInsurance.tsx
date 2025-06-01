@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { format } from "date-fns";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { PropertyInsurance } from "@/hooks/usePropertyInsurance";
+import type { PropertyInsurance } from "@/hooks/usePropertyInsurance";
 
 interface PropertyInsuranceProps {
   propertyId: string;
@@ -31,7 +31,7 @@ const insuranceSchema = z.object({
   effective_date: z.string().min(1, "Effective date is required"),
   expiration_date: z.string().min(1, "Expiration date is required"),
   premium: z.coerce.number().positive("Premium must be positive"),
-  notify_before_expiration: z.boolean().default(false),
+  notify_before_expiration: z.boolean(),
   details: z.string().optional(),
 });
 

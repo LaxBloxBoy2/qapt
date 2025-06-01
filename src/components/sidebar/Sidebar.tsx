@@ -158,6 +158,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   // State for tracking if Properties submenu is expanded
   const [isPropertiesExpanded, setIsPropertiesExpanded] = useState<boolean>(() => {
     // Check if current path is a Properties submenu item
+    if (!pathname) return false;
     return ['/properties', '/units', '/appliances', '/inspections'].includes(pathname) ||
            pathname.startsWith('/inspections/') ||
            pathname.startsWith('/properties/') ||
@@ -168,6 +169,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   // State for tracking if Leases submenu is expanded
   const [isLeasesExpanded, setIsLeasesExpanded] = useState<boolean>(() => {
     // Check if current path is a Leases submenu item
+    if (!pathname) return false;
     return ['/leases', '/applications'].includes(pathname) ||
            pathname.startsWith('/applications/');
   });
@@ -175,6 +177,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   // State for tracking if Contacts submenu is expanded
   const [isContactsExpanded, setIsContactsExpanded] = useState<boolean>(() => {
     // Check if current path is a Contacts submenu item
+    if (!pathname) return false;
     return ['/tenants', '/external-contacts'].includes(pathname) ||
            pathname.startsWith('/tenants/') || pathname.startsWith('/external-contacts/');
   });
@@ -182,6 +185,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   // State for tracking if Finances submenu is expanded
   const [isFinancesExpanded, setIsFinancesExpanded] = useState<boolean>(() => {
     // Check if current path is a Finances submenu item
+    if (!pathname) return false;
     return ['/balances', '/transactions'].includes(pathname) ||
            pathname.startsWith('/transactions/');
   });
@@ -189,6 +193,8 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   // Update submenu expanded states when pathname changes
   useEffect(() => {
     console.log("Pathname changed to:", pathname);
+
+    if (!pathname) return;
 
     // Check if current path is a Properties submenu item
     const isPropertiesPath = ['/properties', '/units', '/appliances', '/inspections'].includes(pathname) ||
@@ -271,7 +277,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                       }}
                       className={cn(
                         "sidebar-link w-full text-left",
-                        item.submenu.some(subItem =>
+                        pathname && item.submenu.some(subItem =>
                           pathname === subItem.href ||
                           (subItem.href === '/properties' && pathname.startsWith('/properties/')) ||
                           (subItem.href === '/units' && pathname.startsWith('/units/')) ||
@@ -308,7 +314,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                             href={subItem.href}
                             className={cn(
                               "sidebar-link",
-                              (pathname === subItem.href ||
+                              pathname && (pathname === subItem.href ||
                                (subItem.href === '/properties' && pathname.startsWith('/properties/')) ||
                                (subItem.href === '/units' && pathname.startsWith('/units/')) ||
                                (subItem.href === '/appliances' && pathname.startsWith('/appliances/'))) && "active",
@@ -327,7 +333,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                     href={item.href}
                     className={cn(
                       "sidebar-link",
-                      pathname === item.href && "active",
+                      pathname && pathname === item.href && "active",
                       collapsed && "justify-center px-0"
                     )}
                   >
@@ -351,7 +357,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                 href={item.href}
                 className={cn(
                   "sidebar-link",
-                  pathname === item.href && "active",
+                  pathname && pathname === item.href && "active",
                   collapsed && "justify-center px-0"
                 )}
               >

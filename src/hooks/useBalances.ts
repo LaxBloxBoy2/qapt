@@ -91,8 +91,8 @@ export function useBalances(filters?: BalanceFilters) {
                 id: tenantUnit.id,
                 name: tenantUnit.name,
                 property: {
-                  id: tenantUnit.properties?.id || "",
-                  name: tenantUnit.properties?.name || "",
+                  id: (tenantUnit.properties as any)?.[0]?.id || "",
+                  name: (tenantUnit.properties as any)?.[0]?.name || "",
                 }
               } : undefined,
             },

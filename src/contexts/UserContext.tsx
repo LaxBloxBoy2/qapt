@@ -10,6 +10,9 @@ export type UserRole = 'admin' | 'team_member';
 export interface UserProfile {
   id: string;
   full_name: string;
+  avatar_url?: string;
+  phone?: string;
+  company?: string;
   role: UserRole;
   created_at: string;
 }

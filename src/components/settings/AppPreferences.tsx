@@ -583,7 +583,7 @@ export function AppPreferences() {
                     console.log('🧪 updatePreferences hook:', updatePreferences);
 
                     // Test with minimal data
-                    const testData = { currency: 'GBP', default_currency_symbol: '£' };
+                    const testData = { currency: 'GBP' as const, default_currency_symbol: '£' };
                     console.log('🧪 Test data:', testData);
 
                     const result = await updatePreferences.mutateAsync(testData);

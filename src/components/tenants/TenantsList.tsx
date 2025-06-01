@@ -66,13 +66,15 @@ export function TenantsList() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1">
-          <Input
-            placeholder="Search tenants..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full"
-            prefix={<i className="ri-search-line text-muted-foreground mr-2"></i>}
-          />
+          <div className="relative">
+            <i className="ri-search-line text-muted-foreground absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+            <Input
+              placeholder="Search tenants..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10"
+            />
+          </div>
         </div>
 
         <div className="w-full sm:w-64">

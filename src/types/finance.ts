@@ -133,6 +133,7 @@ export const transactionSchema = z.object({
   category_id: z.string().uuid().optional().or(z.literal("")),
   maintenance_request_id: z.string().uuid().optional().or(z.literal("")),
   amount: z.coerce.number().positive("Amount must be greater than 0"),
+  status: z.enum(['pending', 'paid', 'overdue', 'cancelled']).optional(),
   due_date: z.string().optional().or(z.literal("")),
   paid_date: z.string().optional().or(z.literal("")),
   payment_method: z.enum(['cash', 'check', 'bank_transfer', 'credit_card', 'online', 'other']).optional(),

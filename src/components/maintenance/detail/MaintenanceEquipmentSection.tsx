@@ -80,7 +80,7 @@ export function MaintenanceEquipmentSection({ requestId, request }: MaintenanceE
     try {
       await updateEquipment.mutateAsync({
         requestId,
-        equipment: linkedEquipment.filter(e => e.id !== equipmentId)
+        equipment: linkedEquipment.filter((e: LinkedEquipment) => e.id !== equipmentId)
       });
     } catch (error) {
       // Error handling is done in the hook
@@ -114,7 +114,7 @@ export function MaintenanceEquipmentSection({ requestId, request }: MaintenanceE
   };
 
   const availableEquipment = propertyAppliances.filter(
-    appliance => !linkedEquipment.some(linked => linked.id === appliance.id)
+    appliance => !linkedEquipment.some((linked: LinkedEquipment) => linked.id === appliance.id)
   );
 
   return (
@@ -180,7 +180,7 @@ export function MaintenanceEquipmentSection({ requestId, request }: MaintenanceE
       <CardContent>
         {linkedEquipment.length > 0 ? (
           <div className="space-y-3">
-            {linkedEquipment.map((equipment) => (
+            {linkedEquipment.map((equipment: LinkedEquipment) => (
               <div
                 key={equipment.id}
                 className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors"

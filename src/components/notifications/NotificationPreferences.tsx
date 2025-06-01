@@ -93,7 +93,7 @@ export function NotificationPreferences() {
   }, [preferences]);
 
   const handleToggle = (key: string, value: boolean) => {
-    setLocalPreferences(prev => prev ? { ...prev, [key]: value } : null);
+    setLocalPreferences(prev => prev ? { ...prev, [key]: value } : undefined);
   };
 
   const handleSave = async () => {

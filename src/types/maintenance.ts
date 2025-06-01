@@ -27,6 +27,7 @@ export interface MaintenanceRequest {
     first_name: string;
     last_name: string;
     email: string;
+    phone?: string;
     is_company?: boolean;
     company_name?: string;
   };
@@ -34,6 +35,7 @@ export interface MaintenanceRequest {
     id: string;
     name: string;
     email: string;
+    phone?: string;
     type: 'internal' | 'external';
   };
 
@@ -162,7 +164,8 @@ export interface UpdateMaintenanceRequest {
   status?: MaintenanceStatus;
   priority?: MaintenancePriority;
   type?: MaintenanceType;
-  assigned_to_id?: string;
+  assigned_to_id?: string | null;
+  assigned_to_type?: 'internal' | 'external' | null;
   due_date?: string;
   tags?: string[];
   estimated_cost?: number;

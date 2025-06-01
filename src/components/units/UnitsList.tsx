@@ -73,7 +73,7 @@ export function UnitsList() {
     return (
       <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-lg">
         <h3 className="text-lg font-semibold">Error loading units</h3>
-        <p>{error.message}</p>
+        <p>{error?.message || 'An unknown error occurred'}</p>
       </div>
     );
   }

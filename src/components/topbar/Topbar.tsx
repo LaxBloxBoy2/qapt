@@ -15,6 +15,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
 
   // Function to get the page title based on the current path
   const getPageTitle = () => {
+    if (!pathname) return "Dashboard";
     const path = pathname.split("/")[1];
     if (!path) return "Dashboard";
     return path.charAt(0).toUpperCase() + path.slice(1);

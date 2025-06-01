@@ -59,8 +59,8 @@ export function MaintenanceAssigneeSection({ request }: MaintenanceAssigneeSecti
       await updateRequest.mutateAsync({
         id: request.id,
         updates: {
-          assigned_to_id: null,
-          assigned_to_type: null
+          assigned_to_id: undefined,
+          assigned_to_type: undefined
         }
       });
     } catch (error) {
@@ -191,7 +191,7 @@ export function MaintenanceAssigneeSection({ request }: MaintenanceAssigneeSecti
                     {request.assigned_to.email}
                   </p>
                 )}
-                {request.assigned_to.phone && (
+                {request.assigned_to?.phone && (
                   <p className="text-sm text-muted-foreground">
                     {request.assigned_to.phone}
                   </p>

@@ -32,6 +32,9 @@ export interface Appliance extends ApplianceFormValues {
   id: string;
   user_id: string;
   created_at: string;
+  last_maintenance_date?: string;
+  // Optional category relationship for when appliances are fetched with category data
+  category?: ApplianceCategory;
 }
 
 export type ApplianceCreateInput = ApplianceFormValues & {
