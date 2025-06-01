@@ -49,15 +49,9 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
 
   return (
     <div className="topbar">
-      {/* Left side - Page title and weather */}
-      <div className="flex flex-col gap-1">
+      {/* Left side - Page title */}
+      <div>
         <h1 className="text-xl font-semibold">{getPageTitle()}</h1>
-        {/* Weather section */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-          <i className="ri-sun-line text-orange-500" />
-          <span className="font-medium">30°C</span>
-          <span>Soleggiato</span>
-        </div>
       </div>
 
       <div className="flex items-center gap-4">
