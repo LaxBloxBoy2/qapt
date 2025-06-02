@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useUser } from "@/contexts/UserContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "remixicon/fonts/remixicon.css";
 
 interface SidebarProps {
@@ -14,7 +15,25 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   const pathname = usePathname();
-  const { profile, signOut } = useUser();
+  const { user, profile, signOut } = useUser();
+
+  // Get user initials for avatar
+  const getInitials = () => {
+    if (profile?.full_name) {
+      return profile.full_name
+        .split(' ')
+        .map(name => name.charAt(0))
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    return user?.email?.charAt(0).toUpperCase() || 'U';
+  };
+
+  // Get display name
+  const getDisplayName = () => {
+    return profile?.full_name || user?.email?.split('@')[0] || 'User';
+  };
 
   const menuItems = [
     {
@@ -123,21 +142,6 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
   ];
 
   const generalItems = [
-    {
-      title: "Test Storage",
-      icon: "ri-tools-line",
-      href: "/test-storage",
-    },
-    {
-      title: "Test Calendar",
-      icon: "ri-calendar-check-line",
-      href: "/test-calendar",
-    },
-    {
-      title: "Test Notifications",
-      icon: "ri-notification-badge-line",
-      href: "/test-notifications",
-    },
     {
       title: "Profile",
       icon: "ri-user-settings-line",
@@ -375,11 +379,14 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
         {!collapsed ? (
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center">
-                <i className="ri-user-line text-white" />
-              </div>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
+                <AvatarFallback className="bg-primary-600 text-white text-sm">
+                  {getInitials()}
+                </AvatarFallback>
+              </Avatar>
               <div>
-                <p className="text-white text-sm font-medium">{profile?.full_name || 'User'}</p>
+                <p className="text-white text-sm font-medium">{getDisplayName()}</p>
                 <p className="text-white/60 text-xs capitalize">{profile?.role || 'Loading...'}</p>
               </div>
             </div>
@@ -393,9 +400,12 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-primary-600 flex items-center justify-center">
-              <i className="ri-user-line text-white" />
-            </div>
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
+              <AvatarFallback className="bg-primary-600 text-white text-sm">
+                {getInitials()}
+              </AvatarFallback>
+            </Avatar>
             <button
               onClick={signOut}
               className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-primary-600 transition-colors"
