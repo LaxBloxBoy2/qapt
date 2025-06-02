@@ -23,7 +23,7 @@ const profileSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function ProfileSettings() {
-  const { user, profile } = useUser();
+  const { user, profile, refreshProfile } = useUser();
   const { data: profileData, isLoading: profileLoading, error: profileError } = useUserProfile();
   const updateProfile = useUpdateProfile();
   const { toast } = useToast();
@@ -102,6 +102,9 @@ export function ProfileSettings() {
 
       // Update the profile with the new avatar URL
       await updateProfile.mutateAsync({ avatar_url: publicUrl });
+
+      // Refresh the UserContext to update all components
+      await refreshProfile();
 
       toast({
         title: "Avatar updated",

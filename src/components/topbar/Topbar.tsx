@@ -88,7 +88,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
         {/* Profile section - similar to sidebar */}
         <div className="flex items-center gap-3 pl-2 border-l border-gray-200 dark:border-gray-700">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.user_metadata?.avatar_url} alt={getDisplayName()} />
+            <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
             <AvatarFallback className="bg-primary text-primary-foreground text-sm">
               {getInitials()}
             </AvatarFallback>
