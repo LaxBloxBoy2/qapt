@@ -59,33 +59,59 @@ export function ProfileSettings() {
     const file = event.target.files?.[0];
     if (!file || !user?.id) return;
 
+    // Validate file size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 2MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please select an image file (JPG, PNG, GIF).",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsUploadingAvatar(true);
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}.${fileExt}`;
+      const fileName = `avatar-${user.id}-${Date.now()}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
 
+      // Upload to image_url bucket (which exists and is configured)
       const { error: uploadError } = await supabase.storage
-        .from('user-files')
+        .from('image_url')
         .upload(filePath, file, { upsert: true });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error("Upload error:", uploadError);
+        throw new Error(uploadError.message);
+      }
 
+      // Get the public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('user-files')
+        .from('image_url')
         .getPublicUrl(filePath);
 
+      // Update the profile with the new avatar URL
       await updateProfile.mutateAsync({ avatar_url: publicUrl });
 
       toast({
         title: "Avatar updated",
         description: "Your profile photo has been updated successfully.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error uploading avatar:", error);
       toast({
         title: "Upload failed",
-        description: "Failed to upload avatar. Please try again.",
+        description: error?.message || "Failed to upload avatar. Please try again.",
         variant: "destructive",
       });
     } finally {
