@@ -119,7 +119,6 @@ export function DashboardCustomizationSimple() {
                         console.log('🔄 Toggle clicked for widget:', widget.id, 'current enabled:', widget.enabled);
                         toggleWidget(widget.id);
                       }}
-                      disabled={['today-section', 'lease-funnel', 'financial-overview', 'recently-viewed'].includes(widget.id)}
                     />
                   </div>
                 </div>

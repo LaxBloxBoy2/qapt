@@ -159,7 +159,6 @@ export function DashboardCustomization() {
                           <Switch
                             checked={widget.enabled}
                             onCheckedChange={() => toggleWidget(widget.id)}
-                            disabled={['today-section', 'lease-funnel', 'financial-overview', 'recently-viewed'].includes(widget.id)}
                           />
                         </div>
                       </div>

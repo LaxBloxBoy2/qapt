@@ -20,7 +20,7 @@ export interface DashboardPreferences {
 }
 
 const DEFAULT_WIDGETS: DashboardWidget[] = [
-  // Always visible core widgets
+  // Core widgets (enabled by default)
   {
     id: 'today-section',
     name: 'Today\'s Overview',
