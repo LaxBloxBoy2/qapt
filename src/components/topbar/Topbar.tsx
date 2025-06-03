@@ -73,9 +73,13 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   // Handle search functionality
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Search triggered with query:", searchQuery);
     if (searchQuery.trim()) {
+      console.log("Navigating to search page with query:", searchQuery.trim());
       // Navigate to search results page
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      console.log("Empty search query, not navigating");
     }
   };
 
@@ -114,6 +118,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
+          <button type="submit" style={{ display: 'none' }}>Search</button>
         </form>
 
         <button
