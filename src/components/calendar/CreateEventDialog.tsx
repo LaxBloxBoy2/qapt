@@ -26,9 +26,8 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useCreateCustomEvent } from "@/hooks/useCalendar";
-// TODO: Import these hooks when they become available
-// import { useGetProperties } from "@/hooks/useProperties";
-// import { useGetUnits } from "@/hooks/useUnits";
+import { useGetProperties } from "@/hooks/useProperties";
+import { useGetUnits } from "@/hooks/useUnits";
 
 const createEventSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -56,11 +55,8 @@ export function CreateEventDialog({ open, onOpenChange, initialDate }: CreateEve
   const [isLoading, setIsLoading] = useState(false);
 
   const createEvent = useCreateCustomEvent();
-  // TODO: Add these when hooks become available
-  // const { data: properties } = useGetProperties();
-  // const { data: units } = useGetUnits();
-  const properties: any[] = [];
-  const units: any[] = [];
+  const { data: properties = [], isLoading: propertiesLoading } = useGetProperties();
+  const { data: units = [], isLoading: unitsLoading } = useGetUnits();
 
   const form = useForm<CreateEventForm>({
     resolver: zodResolver(createEventSchema),
@@ -256,11 +252,17 @@ export function CreateEventDialog({ open, onOpenChange, initialDate }: CreateEve
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {properties?.map((property) => (
-                          <SelectItem key={property.id} value={property.id}>
-                            {property.name}
-                          </SelectItem>
-                        ))}
+                        {propertiesLoading ? (
+                          <SelectItem value="loading" disabled>Loading properties...</SelectItem>
+                        ) : properties && properties.length > 0 ? (
+                          properties.map((property) => (
+                            <SelectItem key={property.id} value={property.id}>
+                              {property.name}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem value="none" disabled>No properties found</SelectItem>
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -283,11 +285,17 @@ export function CreateEventDialog({ open, onOpenChange, initialDate }: CreateEve
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {filteredUnits.map((unit) => (
-                            <SelectItem key={unit.id} value={unit.id}>
-                              {unit.name}
-                            </SelectItem>
-                          ))}
+                          {unitsLoading ? (
+                            <SelectItem value="loading" disabled>Loading units...</SelectItem>
+                          ) : filteredUnits && filteredUnits.length > 0 ? (
+                            filteredUnits.map((unit) => (
+                              <SelectItem key={unit.id} value={unit.id}>
+                                {unit.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="none" disabled>No units found for this property</SelectItem>
+                          )}
                         </SelectContent>
                       </Select>
                       <FormMessage />
