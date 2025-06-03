@@ -12,11 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGetProperties } from "@/hooks/useProperties";
 import { useGetUnits } from "@/hooks/useUnits";
 import { useTenants } from "@/hooks/useTenants";
-import { useGetLeases } from "@/hooks/useLeases";
+import { useLeases } from "@/hooks/useLeases";
 import { Property } from "@/types/property";
 import { Unit } from "@/types/unit";
 import { Tenant } from "@/types/tenant";
-import { Lease } from "@/types/lease";
+import { LeaseWithRelations } from "@/types/lease";
 
 function SearchPage() {
   const searchParams = useSearchParams();
@@ -28,7 +28,7 @@ function SearchPage() {
   const { data: properties = [] } = useGetProperties();
   const { data: units = [] } = useGetUnits();
   const { data: tenants = [] } = useTenants();
-  const { data: leases = [] } = useGetLeases();
+  const { data: leases = [] } = useLeases();
 
   // Search functions
   const searchProperties = (query: string): Property[] => {
@@ -62,14 +62,23 @@ function SearchPage() {
     );
   };
 
-  const searchLeases = (query: string): Lease[] => {
+  const searchLeases = (query: string): LeaseWithRelations[] => {
     if (!query.trim()) return [];
     const lowerQuery = query.toLowerCase();
-    return leases.filter(lease =>
-      lease.tenant_name?.toLowerCase().includes(lowerQuery) ||
-      lease.property_name?.toLowerCase().includes(lowerQuery) ||
-      lease.unit_name?.toLowerCase().includes(lowerQuery)
-    );
+    return leases.filter(lease => {
+      // Search in tenant names
+      const tenantMatch = lease.tenants?.some(tenant =>
+        tenant.first_name?.toLowerCase().includes(lowerQuery) ||
+        tenant.last_name?.toLowerCase().includes(lowerQuery) ||
+        tenant.email?.toLowerCase().includes(lowerQuery)
+      );
+
+      // Search in unit and property names
+      const unitMatch = lease.unit?.name?.toLowerCase().includes(lowerQuery);
+      const propertyMatch = lease.unit?.properties?.name?.toLowerCase().includes(lowerQuery);
+
+      return tenantMatch || unitMatch || propertyMatch;
+    });
   };
 
   // Get search results
@@ -244,12 +253,19 @@ function SearchPage() {
                       <CardContent className="space-y-2">
                         {leaseResults.slice(0, 3).map((lease) => (
                           <div key={lease.id} className="p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <h4 className="font-medium">{lease.tenant_name}</h4>
+                            <h4 className="font-medium">
+                              {lease.primary_tenant
+                                ? `${lease.primary_tenant.first_name} ${lease.primary_tenant.last_name}`
+                                : lease.tenants?.[0]
+                                  ? `${lease.tenants[0].first_name} ${lease.tenants[0].last_name}`
+                                  : 'No tenant assigned'
+                              }
+                            </h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">
-                              {lease.property_name} - {lease.unit_name}
+                              {lease.unit?.properties?.name} - {lease.unit?.name}
                             </p>
                             <Badge variant="outline" className="mt-1">
-                              {lease.status}
+                              {lease.status || 'unknown'}
                             </Badge>
                           </div>
                         ))}
