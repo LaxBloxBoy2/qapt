@@ -25,10 +25,23 @@ function SearchPage() {
   const [activeTab, setActiveTab] = useState("all");
 
   // Data hooks
-  const { data: properties = [] } = useGetProperties();
-  const { data: units = [] } = useGetUnits();
-  const { data: tenants = [] } = useTenants();
-  const { data: leases = [] } = useLeases();
+  const { data: properties = [], isLoading: propertiesLoading } = useGetProperties();
+  const { data: units = [], isLoading: unitsLoading } = useGetUnits();
+  const { data: tenants = [], isLoading: tenantsLoading } = useTenants();
+  const { data: leases = [], isLoading: leasesLoading } = useLeases();
+
+  // Debug logging
+  console.log("Search page data:", {
+    properties: properties?.length || 0,
+    units: units?.length || 0,
+    tenants: tenants?.length || 0,
+    leases: leases?.length || 0,
+    searchQuery,
+    propertiesLoading,
+    unitsLoading,
+    tenantsLoading,
+    leasesLoading
+  });
 
   // Search functions
   const searchProperties = (query: string): Property[] => {
@@ -89,6 +102,16 @@ function SearchPage() {
 
   const totalResults = propertyResults.length + unitResults.length + tenantResults.length + leaseResults.length;
 
+  // Debug search results
+  console.log("Search results:", {
+    query: searchQuery,
+    propertyResults: propertyResults.length,
+    unitResults: unitResults.length,
+    tenantResults: tenantResults.length,
+    leaseResults: leaseResults.length,
+    totalResults
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Update URL without navigation
@@ -96,6 +119,8 @@ function SearchPage() {
     url.searchParams.set('q', searchQuery);
     window.history.replaceState({}, '', url.toString());
   };
+
+  const isLoading = propertiesLoading || unitsLoading || tenantsLoading || leasesLoading;
 
   return (
     <MainLayout>
@@ -130,8 +155,18 @@ function SearchPage() {
           </CardContent>
         </Card>
 
+        {/* Loading State */}
+        {isLoading && searchQuery && (
+          <Card className="p-12 text-center">
+            <div className="flex items-center justify-center">
+              <i className="ri-loader-line text-2xl text-gray-400 animate-spin mr-2" />
+              <span className="text-gray-600 dark:text-gray-400">Searching...</span>
+            </div>
+          </Card>
+        )}
+
         {/* Results */}
-        {searchQuery && (
+        {searchQuery && !isLoading && (
           <div className="space-y-4">
             {/* Results Summary */}
             <div className="flex items-center justify-between">
