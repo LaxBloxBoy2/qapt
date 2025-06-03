@@ -43,11 +43,22 @@ function SearchPage() {
     leasesLoading
   });
 
+  // Add some mock data for testing if no real data exists
+  const mockProperties = properties?.length > 0 ? properties : [
+    { id: '1', name: 'Test Apartment Complex', address: '123 Test St', city: 'Test City', state: 'TS' },
+    { id: '2', name: 'Sample Building', address: '456 Sample Ave', city: 'Sample Town', state: 'ST' }
+  ];
+
+  const mockTenants = tenants?.length > 0 ? tenants : [
+    { id: '1', first_name: 'John', last_name: 'Doe', email: 'john@test.com', phone: '555-0001' },
+    { id: '2', first_name: 'Jane', last_name: 'Smith', email: 'jane@test.com', phone: '555-0002' }
+  ];
+
   // Search functions
   const searchProperties = (query: string): Property[] => {
     if (!query.trim()) return [];
     const lowerQuery = query.toLowerCase();
-    return properties.filter(property =>
+    return mockProperties.filter(property =>
       property.name?.toLowerCase().includes(lowerQuery) ||
       property.address?.toLowerCase().includes(lowerQuery) ||
       property.city?.toLowerCase().includes(lowerQuery) ||
@@ -67,7 +78,7 @@ function SearchPage() {
   const searchTenants = (query: string): Tenant[] => {
     if (!query.trim()) return [];
     const lowerQuery = query.toLowerCase();
-    return tenants.filter(tenant =>
+    return mockTenants.filter(tenant =>
       tenant.first_name?.toLowerCase().includes(lowerQuery) ||
       tenant.last_name?.toLowerCase().includes(lowerQuery) ||
       tenant.email?.toLowerCase().includes(lowerQuery) ||
