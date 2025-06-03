@@ -51,9 +51,15 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
 
   // Function to get the page title based on the current path
   const getPageTitle = () => {
-    if (!pathname) return "Dashboard";
+    if (!pathname) {
+      const { date, time } = formatDateTime();
+      return `Today is ${date} • ${time}`;
+    }
     const path = pathname.split("/")[1];
-    if (!path) return "Dashboard";
+    if (!path || path === 'dashboard') {
+      const { date, time } = formatDateTime();
+      return `Today is ${date} • ${time}`;
+    }
     return path.charAt(0).toUpperCase() + path.slice(1);
   };
 
@@ -84,7 +90,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     <div className="topbar">
       {/* Left side - Page title */}
       <div>
-        <h1 className="text-xl font-semibold">{getPageTitle()}</h1>
+        <h1 className="text-sm font-medium text-gray-600 dark:text-gray-400">{getPageTitle()}</h1>
       </div>
 
       <div className="flex items-center gap-4">
