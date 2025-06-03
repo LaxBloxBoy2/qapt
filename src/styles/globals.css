@@ -86,7 +86,7 @@
 
 .sidebar-content-wrapper {
   @apply relative flex-1;
-  height: calc(100vh - 160px); /* Increased to move profile section up more */
+  height: calc(100vh - 180px); /* Move profile section up even more */
 }
 
 .sidebar-content {

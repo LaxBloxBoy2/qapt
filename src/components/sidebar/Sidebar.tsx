@@ -379,7 +379,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
       {/* User profile - fixed at bottom but positioned higher */}
       <div className="sidebar-footer">
         {!collapsed ? (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
                 <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
@@ -394,9 +394,9 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
             </div>
             <button
               onClick={signOut}
-              className="flex items-center gap-2 text-white/80 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-primary-600 transition-colors w-full"
+              className="flex items-center gap-1.5 text-white/80 hover:text-white text-xs py-1.5 px-2 rounded-md hover:bg-primary-600 transition-colors w-full"
             >
-              <i className="ri-logout-box-line" />
+              <i className="ri-logout-box-line text-sm" />
               <span>Sign Out</span>
             </button>
           </div>
@@ -410,10 +410,10 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
             </Avatar>
             <button
               onClick={signOut}
-              className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-primary-600 transition-colors"
+              className="text-white/80 hover:text-white p-1.5 rounded-md hover:bg-primary-600 transition-colors"
               title="Sign Out"
             >
-              <i className="ri-logout-box-line" />
+              <i className="ri-logout-box-line text-sm" />
             </button>
           </div>
         )}
