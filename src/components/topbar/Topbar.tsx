@@ -6,7 +6,11 @@ import { NotificationDropdown } from "@/components/notifications/NotificationDro
 import { useUser } from "@/contexts/UserContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "remixicon/fonts/remixicon.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useGetProperties } from "@/hooks/useProperties";
+import { useGetUnits } from "@/hooks/useUnits";
+import { useTenants } from "@/hooks/useTenants";
+import { useLeases } from "@/hooks/useLeases";
 
 interface TopbarProps {
   sidebarCollapsed: boolean;
@@ -19,6 +23,14 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   const { user, profile } = useUser();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  // Data hooks for search
+  const { data: properties = [] } = useGetProperties();
+  const { data: units = [] } = useGetUnits();
+  const { data: tenants = [] } = useTenants();
+  const { data: leases = [] } = useLeases();
 
   // Update time every minute
   useEffect(() => {
@@ -28,6 +40,54 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
 
     return () => clearInterval(timer);
   }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Search functions
+  const searchProperties = (query: string) => {
+    if (!query.trim()) return [];
+    const lowerQuery = query.toLowerCase();
+    return properties.filter(property =>
+      property.name?.toLowerCase().includes(lowerQuery) ||
+      property.address?.toLowerCase().includes(lowerQuery) ||
+      property.city?.toLowerCase().includes(lowerQuery)
+    ).slice(0, 3); // Limit to 3 results
+  };
+
+  const searchTenants = (query: string) => {
+    if (!query.trim()) return [];
+    const lowerQuery = query.toLowerCase();
+    return tenants.filter(tenant =>
+      tenant.first_name?.toLowerCase().includes(lowerQuery) ||
+      tenant.last_name?.toLowerCase().includes(lowerQuery) ||
+      tenant.email?.toLowerCase().includes(lowerQuery)
+    ).slice(0, 3); // Limit to 3 results
+  };
+
+  const searchUnits = (query: string) => {
+    if (!query.trim()) return [];
+    const lowerQuery = query.toLowerCase();
+    return units.filter(unit =>
+      unit.name?.toLowerCase().includes(lowerQuery) ||
+      unit.description?.toLowerCase().includes(lowerQuery)
+    ).slice(0, 3); // Limit to 3 results
+  };
+
+  // Get quick search results
+  const propertyResults = searchProperties(searchQuery);
+  const tenantResults = searchTenants(searchQuery);
+  const unitResults = searchUnits(searchQuery);
+  const hasResults = propertyResults.length > 0 || tenantResults.length > 0 || unitResults.length > 0;
 
   // Format the date and time
   const formatDateTime = () => {
@@ -109,22 +169,152 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        <form onSubmit={handleSearch} className="relative">
-          <div className="relative flex items-center">
-            <i className="ri-search-line absolute left-3 text-gray-400 pointer-events-none" />
-            <input
-              type="text"
-              placeholder="Search properties, tenants, leases..."
-              value={searchQuery}
-              onChange={(e) => {
-                console.log("Input changed:", e.target.value);
-                setSearchQuery(e.target.value);
-              }}
-              onFocus={() => console.log("Search input focused")}
-              className="w-64 pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
-          </div>
-        </form>
+        <div ref={searchRef} className="relative">
+          <form onSubmit={handleSearch} className="relative">
+            <div className="relative flex items-center">
+              <i className="ri-search-line absolute left-3 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search properties, tenants, leases..."
+                value={searchQuery}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSearchQuery(value);
+                  setShowDropdown(value.length > 0);
+                }}
+                onFocus={() => {
+                  if (searchQuery.length > 0) {
+                    setShowDropdown(true);
+                  }
+                }}
+                className="w-64 pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              />
+            </div>
+          </form>
+
+          {/* Search Dropdown */}
+          {showDropdown && searchQuery.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+              {hasResults ? (
+                <div className="p-2">
+                  {/* Properties */}
+                  {propertyResults.length > 0 && (
+                    <div className="mb-3">
+                      <div className="px-3 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Properties
+                      </div>
+                      {propertyResults.map((property) => (
+                        <button
+                          key={property.id}
+                          onClick={() => {
+                            router.push(`/properties/${property.id}`);
+                            setShowDropdown(false);
+                            setSearchQuery("");
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="ri-home-line text-gray-400" />
+                            <div>
+                              <div className="font-medium text-sm">{property.name}</div>
+                              <div className="text-xs text-gray-500">{property.address}</div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Tenants */}
+                  {tenantResults.length > 0 && (
+                    <div className="mb-3">
+                      <div className="px-3 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Tenants
+                      </div>
+                      {tenantResults.map((tenant) => (
+                        <button
+                          key={tenant.id}
+                          onClick={() => {
+                            router.push(`/tenants/${tenant.id}`);
+                            setShowDropdown(false);
+                            setSearchQuery("");
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="ri-user-line text-gray-400" />
+                            <div>
+                              <div className="font-medium text-sm">{tenant.first_name} {tenant.last_name}</div>
+                              <div className="text-xs text-gray-500">{tenant.email}</div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Units */}
+                  {unitResults.length > 0 && (
+                    <div className="mb-3">
+                      <div className="px-3 py-1 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Units
+                      </div>
+                      {unitResults.map((unit) => (
+                        <button
+                          key={unit.id}
+                          onClick={() => {
+                            router.push(`/units/${unit.id}`);
+                            setShowDropdown(false);
+                            setSearchQuery("");
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
+                        >
+                          <div className="flex items-center gap-2">
+                            <i className="ri-building-line text-gray-400" />
+                            <div>
+                              <div className="font-medium text-sm">{unit.name}</div>
+                              <div className="text-xs text-gray-500">{unit.description}</div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* View All Results */}
+                  <div className="border-t border-gray-200 dark:border-gray-700 pt-2">
+                    <button
+                      onClick={() => {
+                        router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                        setShowDropdown(false);
+                        setSearchQuery("");
+                      }}
+                      className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md text-sm text-primary font-medium"
+                    >
+                      <i className="ri-search-line mr-2" />
+                      View all results for "{searchQuery}"
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                  <i className="ri-search-line text-2xl mb-2 block" />
+                  <div className="text-sm">No results found for "{searchQuery}"</div>
+                  <button
+                    onClick={() => {
+                      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+                      setShowDropdown(false);
+                      setSearchQuery("");
+                    }}
+                    className="text-primary text-sm mt-2 hover:underline"
+                  >
+                    Search all items
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
         <button
           onClick={toggleTheme}
