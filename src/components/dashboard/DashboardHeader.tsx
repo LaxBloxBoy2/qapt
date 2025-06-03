@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,41 @@ import { UserMenu } from "@/components/layout/UserMenu";
 
 export function DashboardHeader() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const router = useRouter();
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format the date and time
+  const formatDateTime = () => {
+    const now = currentDateTime;
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    const dateStr = now.toLocaleDateString('en-US', options);
+    const timeStr = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return {
+      date: dateStr,
+      time: timeStr
+    };
+  };
+
+  const { date, time } = formatDateTime();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,10 +80,11 @@ export function DashboardHeader() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                Dashboard
+                Today is {date}
               </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Welcome back! Here's what's happening with your properties.
+              <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                <i className="ri-time-line" />
+                Current time: {time}
               </p>
             </div>
             
