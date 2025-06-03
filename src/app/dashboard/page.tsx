@@ -101,12 +101,9 @@ function DashboardPage() {
         {/* Dashboard Header with Customization */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Today is {date}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
-              <i className="ri-time-line" />
-              Current time: {time}
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              Welcome back! Here's what's happening with your properties.
             </p>
           </div>
           <DashboardCustomizationSimple />
