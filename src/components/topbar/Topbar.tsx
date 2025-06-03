@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/components/layout/ThemeProvider";
 import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
 import { useUser } from "@/contexts/UserContext";
@@ -14,6 +14,7 @@ interface TopbarProps {
 
 export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { user, profile } = useUser();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -118,6 +119,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
         <NotificationDropdown />
 
         <button
+          onClick={() => router.push('/help')}
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
           aria-label="Help"
         >

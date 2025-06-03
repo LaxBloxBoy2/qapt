@@ -143,11 +143,6 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
 
   const generalItems = [
     {
-      title: "Profile",
-      icon: "ri-user-settings-line",
-      href: "/profile",
-    },
-    {
       title: "Settings",
       icon: "ri-settings-line",
       href: "/settings",
