@@ -109,9 +109,9 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
           aria-label="Toggle theme"
         >
           {theme === "dark" ? (
-            <i className="ri-sun-line text-gray-600 dark:text-gray-300" />
+            <i className="ri-sun-line text-gray-600 dark:text-gray-300 text-lg" />
           ) : (
-            <i className="ri-moon-line text-gray-600 dark:text-gray-300" />
+            <i className="ri-moon-line text-gray-600 dark:text-gray-300 text-lg" />
           )}
         </button>
 
@@ -121,7 +121,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
           className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
           aria-label="Help"
         >
-          <i className="ri-question-line text-gray-600 dark:text-gray-300" />
+          <i className="ri-question-line text-gray-600 dark:text-gray-300 text-lg" />
         </button>
 
         {/* Profile section - similar to sidebar */}
