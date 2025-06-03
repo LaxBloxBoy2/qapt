@@ -18,6 +18,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   const { theme, setTheme } = useTheme();
   const { user, profile } = useUser();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Update time every minute
   useEffect(() => {
@@ -69,6 +70,15 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Handle search functionality
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to search results page
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   // Get user initials for avatar
   const getInitials = () => {
     if (profile?.full_name) {
@@ -95,14 +105,16 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="search-bar">
+        <form onSubmit={handleSearch} className="search-bar">
           <i className="ri-search-line text-gray-500" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search properties, tenants, leases..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
-        </div>
+        </form>
 
         <button
           onClick={toggleTheme}
