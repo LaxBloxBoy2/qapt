@@ -6,6 +6,7 @@ import { NotificationDropdown } from "@/components/notifications/NotificationDro
 import { useUser } from "@/contexts/UserContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "remixicon/fonts/remixicon.css";
+import { useState, useEffect } from "react";
 
 interface TopbarProps {
   sidebarCollapsed: boolean;
@@ -15,12 +16,50 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
   const { user, profile } = useUser();
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format the date and time
+  const formatDateTime = () => {
+    const now = currentDateTime;
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    const dateStr = now.toLocaleDateString('en-US', options);
+    const timeStr = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return {
+      date: dateStr,
+      time: timeStr
+    };
+  };
 
   // Function to get the page title based on the current path
   const getPageTitle = () => {
-    if (!pathname) return "Dashboard";
+    if (!pathname) {
+      const { date } = formatDateTime();
+      return `Today is ${date}`;
+    }
     const path = pathname.split("/")[1];
-    if (!path) return "Dashboard";
+    if (!path || path === 'dashboard') {
+      const { date } = formatDateTime();
+      return `Today is ${date}`;
+    }
     return path.charAt(0).toUpperCase() + path.slice(1);
   };
 

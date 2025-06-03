@@ -16,11 +16,45 @@ import { ExpenseBreakdown } from "@/components/dashboard/ExpenseBreakdown";
 import { DashboardCustomizationSimple } from "@/components/dashboard/DashboardCustomizationSimple";
 import { useDashboardData } from "@/hooks/useDashboard";
 import { useDashboardPreferences } from "@/hooks/useDashboardPreferences";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function DashboardPage() {
   const { data: dashboardData, isLoading } = useDashboardData();
   const { enabledWidgets, preferences } = useDashboardPreferences();
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Format the date and time
+  const formatDateTime = () => {
+    const now = currentDateTime;
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
+    const dateStr = now.toLocaleDateString('en-US', options);
+    const timeStr = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return {
+      date: dateStr,
+      time: timeStr
+    };
+  };
+
+  const { date, time } = formatDateTime();
 
   // Widget component mapping
   const widgetComponents = {
@@ -67,11 +101,13 @@ function DashboardPage() {
         {/* Dashboard Header with Customization */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              Welcome back! Here's what's happening with your properties.
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Today is {date}
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 flex items-center gap-2">
+              <i className="ri-time-line" />
+              Current time: {time}
             </p>
-
           </div>
           <DashboardCustomizationSimple />
         </div>
