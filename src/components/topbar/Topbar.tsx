@@ -109,16 +109,21 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
       </div>
 
       <div className="flex items-center gap-4">
-        <form onSubmit={handleSearch} className="search-bar">
-          <i className="ri-search-line text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search properties, tenants, leases..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="search-input"
-          />
-          <button type="submit" style={{ display: 'none' }}>Search</button>
+        <form onSubmit={handleSearch} className="relative">
+          <div className="relative flex items-center">
+            <i className="ri-search-line absolute left-3 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search properties, tenants, leases..."
+              value={searchQuery}
+              onChange={(e) => {
+                console.log("Input changed:", e.target.value);
+                setSearchQuery(e.target.value);
+              }}
+              onFocus={() => console.log("Search input focused")}
+              className="w-64 pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
         </form>
 
         <button
