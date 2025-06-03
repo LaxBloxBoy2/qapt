@@ -86,7 +86,7 @@
 
 .sidebar-content-wrapper {
   @apply relative flex-1;
-  height: calc(100vh - 130px); /* Adjust based on header and footer heights */
+  height: calc(100vh - 160px); /* Increased to move profile section up more */
 }
 
 .sidebar-content {
@@ -120,10 +120,6 @@
 
 .sidebar-footer {
   @apply p-4 border-t border-primary-600 mt-auto;
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
 }
 
 .main-content {
