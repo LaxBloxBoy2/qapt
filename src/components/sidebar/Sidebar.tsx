@@ -371,53 +371,53 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
             ))}
           </nav>
 
-          {/* User profile section moved up here for better visibility */}
-          <div className="mt-6 pt-4 border-t border-primary-600/30">
-            {!collapsed ? (
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
-                    <AvatarFallback className="bg-primary-600 text-white text-sm">
-                      {getInitials()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="text-white text-sm font-medium">{getDisplayName()}</p>
-                    <p className="text-white/60 text-xs capitalize">{profile?.role || 'Loading...'}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={signOut}
-                  className="flex items-center gap-2 text-white/80 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-primary-600 transition-colors w-full"
-                >
-                  <i className="ri-logout-box-line" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
-                  <AvatarFallback className="bg-primary-600 text-white text-sm">
-                    {getInitials()}
-                  </AvatarFallback>
-                </Avatar>
-                <button
-                  onClick={signOut}
-                  className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-primary-600 transition-colors"
-                  title="Sign Out"
-                >
-                  <i className="ri-logout-box-line" />
-                </button>
-              </div>
-            )}
-          </div>
+
           </div>
         </div>
       </div>
 
-
+      {/* User profile - fixed at bottom but positioned higher */}
+      <div className="sidebar-footer">
+        {!collapsed ? (
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
+                <AvatarFallback className="bg-primary-600 text-white text-sm">
+                  {getInitials()}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-white text-sm font-medium">{getDisplayName()}</p>
+                <p className="text-white/60 text-xs capitalize">{profile?.role || 'Loading...'}</p>
+              </div>
+            </div>
+            <button
+              onClick={signOut}
+              className="flex items-center gap-2 text-white/80 hover:text-white text-sm py-2 px-3 rounded-lg hover:bg-primary-600 transition-colors w-full"
+            >
+              <i className="ri-logout-box-line" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-3">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={profile?.avatar_url} alt={getDisplayName()} />
+              <AvatarFallback className="bg-primary-600 text-white text-sm">
+                {getInitials()}
+              </AvatarFallback>
+            </Avatar>
+            <button
+              onClick={signOut}
+              className="text-white/80 hover:text-white p-2 rounded-lg hover:bg-primary-600 transition-colors"
+              title="Sign Out"
+            >
+              <i className="ri-logout-box-line" />
+            </button>
+          </div>
+        )}
+      </div>
     </aside>
   );
 }

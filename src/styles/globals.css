@@ -120,6 +120,10 @@
 
 .sidebar-footer {
   @apply p-4 border-t border-primary-600 mt-auto;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
 }
 
 .main-content {
