@@ -1,53 +1,76 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-// For now, we'll use a simple email simulation
-// In production, you'd use SendGrid, Resend, or another email service
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 async function sendInvitationEmail(email: string, inviterName: string, invitationToken: string) {
-  // Simulate email sending
-  console.log(`
-    📧 INVITATION EMAIL SENT TO: ${email}
-    
-    Subject: You've been invited to join ${inviterName}'s property management team
-    
-    Hi there!
-    
-    ${inviterName} has invited you to join their property management team on QAPT.
-    
-    Click the link below to accept the invitation:
-    ${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${invitationToken}
-    
-    If you don't have an account yet, you'll be able to create one during the invitation process.
-    
-    Best regards,
-    The QAPT Team
-  `);
-  
-  // In production, replace this with actual email sending:
-  /*
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: 'noreply@qapt.com',
-      to: email,
+  const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${invitationToken}`;
+
+  try {
+    const { data, error } = await resend.emails.send({
+      from: 'QAPT Team <noreply@qapt.app>',
+      to: [email],
       subject: `You've been invited to join ${inviterName}'s property management team`,
       html: `
-        <h2>You've been invited to join a property management team!</h2>
-        <p>Hi there!</p>
-        <p>${inviterName} has invited you to join their property management team on QAPT.</p>
-        <p><a href="${process.env.NEXT_PUBLIC_APP_URL}/invite/${invitationToken}" style="background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Accept Invitation</a></p>
-        <p>If you don't have an account yet, you'll be able to create one during the invitation process.</p>
-        <p>Best regards,<br>The QAPT Team</p>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Team Invitation</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 28px;">QAPT</h1>
+            <p style="color: #e6fffa; margin: 10px 0 0 0;">Property Management Platform</p>
+          </div>
+
+          <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e5e7eb;">
+            <h2 style="color: #1f2937; margin-top: 0;">You've been invited to join a team!</h2>
+
+            <p>Hi there!</p>
+
+            <p><strong>${inviterName}</strong> has invited you to join their property management team on QAPT.</p>
+
+            <p>QAPT is a comprehensive property management platform that helps teams manage properties, tenants, leases, maintenance, and finances all in one place.</p>
+
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${inviteUrl}" style="background: #10b981; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; font-size: 16px;">Accept Invitation</a>
+            </div>
+
+            <p style="color: #6b7280; font-size: 14px;">If the button doesn't work, you can copy and paste this link into your browser:</p>
+            <p style="background: #f3f4f6; padding: 10px; border-radius: 5px; word-break: break-all; font-size: 14px;">${inviteUrl}</p>
+
+            <p style="color: #6b7280; font-size: 14px;">If you don't have an account yet, you'll be able to create one during the invitation process.</p>
+
+            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
+
+            <p style="color: #6b7280; font-size: 14px; margin: 0;">
+              Best regards,<br>
+              The QAPT Team
+            </p>
+          </div>
+
+          <div style="text-align: center; margin-top: 20px; color: #9ca3af; font-size: 12px;">
+            <p>This invitation was sent to ${email}. If you didn't expect this invitation, you can safely ignore this email.</p>
+          </div>
+        </body>
+        </html>
       `,
-    }),
-  });
-  */
-  
-  return { success: true };
+    });
+
+    if (error) {
+      console.error('Resend error:', error);
+      throw new Error(`Failed to send email: ${error.message}`);
+    }
+
+    console.log('✅ Email sent successfully:', data);
+    return { success: true, messageId: data?.id };
+  } catch (error) {
+    console.error('Email sending failed:', error);
+    throw error;
+  }
 }
 
 export async function POST(request: Request) {
