@@ -258,7 +258,7 @@ export default function InvitePage() {
                   </>
                 ) : (
                   <>
-                    <i className={isNewUser ? "ri-user-add-line" : "ri-login-box-line"} className="mr-2" />
+                    <i className={`${isNewUser ? "ri-user-add-line" : "ri-login-box-line"} mr-2`} />
                     {isNewUser ? 'Create Account & Accept' : 'Sign In to Accept'}
                   </>
                 )}
