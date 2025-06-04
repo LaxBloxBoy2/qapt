@@ -78,7 +78,7 @@ export default function InvitePage() {
           invitation.email,
           formData.password,
           formData.fullName,
-          'member'
+          'team_member'
         );
 
         if (signUpResult.error) {
