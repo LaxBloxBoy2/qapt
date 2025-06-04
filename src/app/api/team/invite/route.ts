@@ -23,10 +23,13 @@ async function sendInvitationEmail(email: string, inviterName: string, invitatio
   }
 
   console.log('✅ Resend is configured, sending real email to:', email);
+  console.log('🔑 API Key exists:', !!process.env.RESEND_API_KEY);
+  console.log('🔑 API Key length:', process.env.RESEND_API_KEY?.length);
 
   try {
+    console.log('📧 Attempting to send email via Resend...');
     const { data, error } = await resend.emails.send({
-      from: 'QAPT Team <noreply@qapt.app>',
+      from: 'QAPT Team <onboarding@resend.dev>',  // Using Resend's default domain
       to: [email],
       subject: `You've been invited to join ${inviterName}'s property management team`,
       html: `
@@ -77,15 +80,20 @@ async function sendInvitationEmail(email: string, inviterName: string, invitatio
       `,
     });
 
+    console.log('📬 Resend response data:', data);
+    console.log('❌ Resend response error:', error);
+
     if (error) {
-      console.error('Resend error:', error);
-      throw new Error(`Failed to send email: ${error.message}`);
+      console.error('❌ Resend API error details:', JSON.stringify(error, null, 2));
+      throw new Error(`Failed to send email: ${error.message || JSON.stringify(error)}`);
     }
 
-    console.log('✅ Email sent successfully:', data);
+    console.log('✅ Email sent successfully! Message ID:', data?.id);
     return { success: true, messageId: data?.id };
-  } catch (error) {
-    console.error('Email sending failed:', error);
+  } catch (error: any) {
+    console.error('💥 Email sending failed with error:', error);
+    console.error('💥 Error stack:', error.stack);
+    console.error('💥 Error details:', JSON.stringify(error, null, 2));
     throw error;
   }
 }
@@ -169,10 +177,14 @@ export async function POST(request: Request) {
     }
 
     // Send the invitation email
+    console.log('🚀 About to send invitation email...');
     try {
-      await sendInvitationEmail(email, inviterName, invitation.invitation_token);
-    } catch (emailError) {
-      console.error('Email sending error:', emailError);
+      const emailResult = await sendInvitationEmail(email, inviterName, invitation.invitation_token);
+      console.log('📧 Email sending result:', emailResult);
+    } catch (emailError: any) {
+      console.error('💥 Email sending error in main function:', emailError);
+      console.error('💥 Email error message:', emailError.message);
+      console.error('💥 Email error stack:', emailError.stack);
       // Don't fail the request if email fails, just log it
     }
 
