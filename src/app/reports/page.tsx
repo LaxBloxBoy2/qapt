@@ -164,54 +164,6 @@ function ReportsPage() {
           href: "/reports/transaction/unpaid-bills"
         }
       ]
-    },
-    {
-      id: "compliance",
-      title: "Compliance",
-      description: "Compliance and audit reports",
-      icon: "ri-shield-check-line",
-      color: "bg-red-500",
-      reports: [
-        {
-          id: "bank-reconciliation",
-          title: "Bank Reconciliation",
-          description: "The most recent bank reconciliation report for a specific bank account.",
-          href: "/reports/compliance/bank-reconciliation"
-        },
-        {
-          id: "trust-reconciliation",
-          title: "Trust Reconciliation",
-          description: "Bank account balance breakdown and reconciliation reports, often needed for PM licensing board audits.",
-          href: "/reports/compliance/trust-reconciliation"
-        }
-      ]
-    },
-    {
-      id: "task",
-      title: "Task",
-      description: "Task and work order reports",
-      icon: "ri-task-line",
-      color: "bg-indigo-500",
-      reports: [
-        {
-          id: "completed-tasks",
-          title: "Completed Tasks",
-          description: "Completed tasks by property, assignee, and task type during a specified time frame.",
-          href: "/reports/task/completed-tasks"
-        },
-        {
-          id: "open-tasks",
-          title: "Open Tasks",
-          description: "Open tasks by property, assignee, and task type during a specified time frame.",
-          href: "/reports/task/open-tasks"
-        },
-        {
-          id: "work-orders",
-          title: "Work Orders",
-          description: "Work orders by property, assignee, work order type, and status during a specified time frame.",
-          href: "/reports/task/work-orders"
-        }
-      ]
     }
   ];
 

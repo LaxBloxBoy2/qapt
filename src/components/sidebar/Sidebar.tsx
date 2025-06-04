@@ -154,16 +154,6 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
           icon: "ri-exchange-line",
           href: "/reports/transaction",
         },
-        {
-          title: "Compliance",
-          icon: "ri-shield-check-line",
-          href: "/reports/compliance",
-        },
-        {
-          title: "Task",
-          icon: "ri-task-line",
-          href: "/reports/task",
-        },
       ],
     },
     {
