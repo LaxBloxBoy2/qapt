@@ -22,7 +22,7 @@ async function sendInvitationEmail(email: string, inviterName: string, invitatio
     return { success: true, messageId: 'simulated' };
   }
 
-  console.log('✅ Resend is configured, sending real email...');
+  console.log('✅ Resend is configured, sending real email to:', email);
 
   try {
     const { data, error } = await resend.emails.send({
