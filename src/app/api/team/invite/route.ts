@@ -2,10 +2,25 @@ import { createClient } from '@supabase/supabase-js';
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 async function sendInvitationEmail(email: string, inviterName: string, invitationToken: string) {
   const inviteUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/invite/${invitationToken}`;
+
+  // If Resend is not configured, log the email instead
+  if (!resend) {
+    console.log(`
+      📧 EMAIL WOULD BE SENT TO: ${email}
+
+      Subject: You've been invited to join ${inviterName}'s property management team
+
+      Invitation URL: ${inviteUrl}
+
+      Note: Resend API key not configured. Email sending is disabled.
+    `);
+    return { success: true, messageId: 'simulated' };
+  }
 
   try {
     const { data, error } = await resend.emails.send({
