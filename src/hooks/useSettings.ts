@@ -439,7 +439,7 @@ export function useUpdateNotificationSettings() {
   });
 }
 
-// Team Members (placeholder for future implementation)
+// Team Members
 export function useTeamMembers() {
   const { user } = useUser();
 
@@ -469,6 +469,65 @@ export function useTeamMembers() {
       }
     },
     enabled: !!user?.id,
+  });
+}
+
+// Invite team member
+export function useInviteTeamMember() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useUser();
+
+  return useMutation({
+    mutationFn: async (inviteData: {
+      email: string;
+      role: 'admin' | 'member';
+      permissions: {
+        properties: boolean;
+        tenants: boolean;
+        leases: boolean;
+        finances: boolean;
+        maintenance: boolean;
+        reports: boolean;
+      };
+    }) => {
+      if (!user) throw new Error('User not authenticated');
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) throw new Error('No active session');
+
+      const response = await fetch('/api/team/invite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify(inviteData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to send invitation');
+      }
+
+      return response.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Invitation Sent",
+        description: `Invitation has been sent to ${data.invitation.email}. They will receive an email with instructions to join your team.`,
+      });
+
+      // Refresh team members list
+      queryClient.invalidateQueries({ queryKey: ['team-members', user?.id] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to send invitation",
+        variant: "destructive",
+      });
+    },
   });
 }
 

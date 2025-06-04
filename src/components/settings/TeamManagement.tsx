@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { useTeamMembers } from "@/hooks/useSettings";
+import { useTeamMembers, useInviteTeamMember } from "@/hooks/useSettings";
 
 const permissions = [
   { key: 'properties', label: 'Properties', description: 'View and manage properties' },
@@ -22,6 +22,7 @@ const permissions = [
 
 export function TeamManagement() {
   const { data: teamMembers = [], isLoading } = useTeamMembers();
+  const inviteTeamMember = useInviteTeamMember();
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
   const [inviteForm, setInviteForm] = useState({
     email: '',
@@ -37,21 +38,31 @@ export function TeamManagement() {
   });
 
   const handleInvite = async () => {
-    // TODO: Implement team member invitation
-    console.log('Inviting team member:', inviteForm);
-    setIsInviteDialogOpen(false);
-    setInviteForm({
-      email: '',
-      role: 'member',
-      permissions: {
-        properties: true,
-        tenants: true,
-        leases: true,
-        finances: false,
-        maintenance: true,
-        reports: false,
-      },
-    });
+    if (!inviteForm.email.trim()) {
+      return;
+    }
+
+    try {
+      await inviteTeamMember.mutateAsync(inviteForm);
+
+      // Reset form and close dialog on success
+      setIsInviteDialogOpen(false);
+      setInviteForm({
+        email: '',
+        role: 'member',
+        permissions: {
+          properties: true,
+          tenants: true,
+          leases: true,
+          finances: false,
+          maintenance: true,
+          reports: false,
+        },
+      });
+    } catch (error) {
+      // Error is handled by the mutation hook
+      console.error('Invitation failed:', error);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -170,9 +181,21 @@ export function TeamManagement() {
                     <Button variant="outline" onClick={() => setIsInviteDialogOpen(false)}>
                       Cancel
                     </Button>
-                    <Button onClick={handleInvite}>
-                      <i className="ri-mail-send-line mr-2" />
-                      Send Invitation
+                    <Button
+                      onClick={handleInvite}
+                      disabled={inviteTeamMember.isPending || !inviteForm.email.trim()}
+                    >
+                      {inviteTeamMember.isPending ? (
+                        <>
+                          <i className="ri-loader-line mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <i className="ri-mail-send-line mr-2" />
+                          Send Invitation
+                        </>
+                      )}
                     </Button>
                   </div>
                 </div>
