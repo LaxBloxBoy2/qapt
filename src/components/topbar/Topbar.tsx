@@ -111,18 +111,23 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     };
   };
 
-  // Function to get the page title based on the current path
-  const getPageTitle = () => {
+  // Function to get the page title and current page name
+  const getPageInfo = () => {
+    const { date, time } = formatDateTime();
+    const dateTimeString = `Today is ${date} • ${time}`;
+
     if (!pathname) {
-      const { date, time } = formatDateTime();
-      return `Today is ${date} • ${time}`;
+      return { title: dateTimeString, pageName: 'Dashboard' };
     }
+
     const path = pathname.split("/")[1];
     if (!path || path === 'dashboard') {
-      const { date, time } = formatDateTime();
-      return `Today is ${date} • ${time}`;
+      return { title: dateTimeString, pageName: 'Dashboard' };
     }
-    return path.charAt(0).toUpperCase() + path.slice(1);
+
+    // Get page name from path
+    const pageName = path.charAt(0).toUpperCase() + path.slice(1);
+    return { title: dateTimeString, pageName };
   };
 
   // Function to toggle between light and dark themes
@@ -161,11 +166,14 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
     return profile?.full_name || user?.email?.split('@')[0] || 'User';
   };
 
+  const { title, pageName } = getPageInfo();
+
   return (
     <div className="topbar">
-      {/* Left side - Page title */}
+      {/* Left side - Date/Time and Page title */}
       <div>
-        <h1 className="text-sm font-medium text-gray-600 dark:text-gray-400">{getPageTitle()}</h1>
+        <h1 className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</h1>
+        <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{pageName}</p>
       </div>
 
       <div className="flex items-center gap-4">
