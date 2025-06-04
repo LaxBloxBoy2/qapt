@@ -22,6 +22,8 @@ async function sendInvitationEmail(email: string, inviterName: string, invitatio
     return { success: true, messageId: 'simulated' };
   }
 
+  console.log('✅ Resend is configured, sending real email...');
+
   try {
     const { data, error } = await resend.emails.send({
       from: 'QAPT Team <noreply@qapt.app>',
