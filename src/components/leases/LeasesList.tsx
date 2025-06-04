@@ -74,46 +74,56 @@ export function LeasesList() {
 
   return (
     <div className="space-y-6">
-      {/* Professional Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 pb-6">
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Lease Agreements</h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {leases ? `${leases.length} total leases` : 'Manage your property lease agreements'}
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            {leases && leases.length > 0 && (
-              <div className="hidden sm:flex items-center gap-4 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-gray-600 dark:text-gray-400">
-                    {leases.filter(l => l.status === 'active').length} Active
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-gray-600 dark:text-gray-400">
-                    {leases.filter(l => l.status === 'upcoming').length} Upcoming
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                  <span className="text-gray-600 dark:text-gray-400">
-                    {leases.filter(l => l.status === 'expired').length} Expired
-                  </span>
-                </div>
+      {/* Clean Header with Stats and Actions */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        {/* Centered Stats */}
+        <div className="flex-1 flex justify-center">
+          {leases && leases.length > 0 && (
+            <div className="flex items-center gap-6 text-sm">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">{leases.length}</div>
+                <div className="text-gray-600 dark:text-gray-400">Total Leases</div>
               </div>
-            )}
-            <Button
-              onClick={() => setShowAddDialog(true)}
-              className="bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 dark:text-gray-900"
-            >
-              <i className="ri-add-line mr-2"></i>
-              New Lease
-            </Button>
-          </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">
+                    {leases.filter(l => l.status === 'active').length}
+                  </span>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400">Active</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">
+                    {leases.filter(l => l.status === 'upcoming').length}
+                  </span>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400">Upcoming</div>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5 mb-1">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">
+                    {leases.filter(l => l.status === 'expired').length}
+                  </span>
+                </div>
+                <div className="text-gray-600 dark:text-gray-400">Expired</div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Action Button */}
+        <div className="flex justify-center lg:justify-end">
+          <Button
+            onClick={() => setShowAddDialog(true)}
+            className="bg-primary hover:bg-primary/90"
+          >
+            <i className="ri-add-line mr-2"></i>
+            New Lease
+          </Button>
         </div>
       </div>
 

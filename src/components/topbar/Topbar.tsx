@@ -125,8 +125,24 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
       return { title: dateTimeString, pageName: 'Dashboard' };
     }
 
-    // Get page name from path
-    const pageName = path.charAt(0).toUpperCase() + path.slice(1);
+    // Get page name from path with custom names
+    let pageName = path.charAt(0).toUpperCase() + path.slice(1);
+
+    // Custom page names for better display
+    if (path === 'leases') {
+      pageName = 'Lease Agreements';
+    } else if (path === 'maintenance') {
+      pageName = 'Maintenance Hub';
+    } else if (path === 'properties') {
+      pageName = 'Properties';
+    } else if (path === 'tenants') {
+      pageName = 'Tenants';
+    } else if (path === 'calendar') {
+      pageName = 'Calendar';
+    } else if (path === 'settings') {
+      pageName = 'Settings';
+    }
+
     return { title: dateTimeString, pageName };
   };
 
