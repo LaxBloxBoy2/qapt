@@ -23,8 +23,7 @@ export async function GET(
         permissions,
         status,
         invited_at,
-        owner_id,
-        profiles!team_members_owner_id_fkey(full_name)
+        owner_id
       `)
       .eq('invitation_token', token)
       .eq('status', 'pending')
@@ -37,11 +36,18 @@ export async function GET(
       );
     }
 
+    // Get owner profile separately
+    const { data: ownerProfile } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', invitation.owner_id)
+      .single();
+
     // Check if invitation is expired (optional: 7 days)
     const invitedAt = new Date(invitation.invited_at);
     const now = new Date();
     const daysDiff = (now.getTime() - invitedAt.getTime()) / (1000 * 3600 * 24);
-    
+
     if (daysDiff > 7) {
       return NextResponse.json(
         { error: 'This invitation has expired' },
@@ -56,7 +62,7 @@ export async function GET(
         role: invitation.role,
         permissions: invitation.permissions,
         status: invitation.status,
-        owner_name: invitation.profiles?.full_name || 'Unknown',
+        owner_name: ownerProfile?.full_name || 'Unknown',
       }
     });
 
