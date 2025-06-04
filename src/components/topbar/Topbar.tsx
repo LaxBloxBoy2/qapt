@@ -189,7 +189,10 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
       {/* Left side - Date/Time and Page title */}
       <div>
         <h1 className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</h1>
-        <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{pageName}</p>
+        {/* Only show page name if not on dashboard */}
+        {(!pathname || pathname !== '/dashboard') && (
+          <p className="text-lg font-semibold text-gray-900 dark:text-white mt-1">{pageName}</p>
+        )}
       </div>
 
       <div className="flex items-center gap-4">
