@@ -44,7 +44,7 @@ function BankTransactionsReportPage() {
     date_from: filters.dateFrom || undefined,
     date_to: filters.dateTo || undefined,
     property_id: filters.properties.length === 1 ? filters.properties[0] : undefined,
-    status: filters.status !== 'all' ? filters.status : undefined,
+    status: filters.status !== 'all' ? filters.status as 'pending' | 'paid' | 'overdue' | 'cancelled' : undefined,
   });
 
   const [bankTransactions, setBankTransactions] = useState<BankTransactionEntry[]>([]);
