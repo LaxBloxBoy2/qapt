@@ -87,7 +87,7 @@ function AppliancesReportPage() {
       return {
         id: appliance.id,
         property_name: property?.name || 'Unknown Property',
-        unit_name: appliance.unit_name || 'Common Area',
+        unit_name: 'Common Area', // Appliances are typically property-level, not unit-specific
         appliance_name: appliance.name,
         category: typeof appliance.category === 'string' ? appliance.category : (appliance.category?.toString() || 'Other'),
         brand: appliance.brand || '',
