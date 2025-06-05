@@ -83,7 +83,7 @@ function AppliancesReportPage() {
         property_name: property?.name || 'Unknown Property',
         unit_name: appliance.unit_name || 'Common Area',
         appliance_name: appliance.name,
-        category: appliance.category || 'Other',
+        category: typeof appliance.category === 'string' ? appliance.category : (appliance.category?.toString() || 'Other'),
         brand: appliance.brand || '',
         model: appliance.model || '',
         serial_number: appliance.serial_number || '',
