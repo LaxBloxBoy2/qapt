@@ -43,19 +43,7 @@ export default function Maintenance() {
     <div className="space-y-6">
       {/* Modern Header with Actions */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div className="space-y-1">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <i className="ri-tools-line text-xl text-primary" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Maintenance Hub</h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Streamline maintenance operations across all properties
-              </p>
-            </div>
-          </div>
-        </div>
+        <h1 className="text-2xl font-semibold">Maintenance Hub</h1>
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">

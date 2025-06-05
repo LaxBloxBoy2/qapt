@@ -56,12 +56,7 @@ export function TenantsList() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Tenants</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            Manage your tenant relationships
-          </p>
-        </div>
+        <h2 className="text-2xl font-semibold">Tenants</h2>
         <Button onClick={() => setShowAddDialog(true)}>
           <i className="ri-user-add-line mr-2"></i>
           Add Tenant
