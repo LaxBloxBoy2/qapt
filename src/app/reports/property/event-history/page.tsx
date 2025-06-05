@@ -67,7 +67,7 @@ function EventHistoryReportPage() {
           property_name: property?.name || 'Unknown Property',
           unit_name: request.unit?.name || 'Common Area',
           event_type: 'maintenance',
-          event_category: request.category || 'General',
+          event_category: request.type || 'General',
           description: request.description || 'Maintenance request',
           status: request.status,
           priority: request.priority,
