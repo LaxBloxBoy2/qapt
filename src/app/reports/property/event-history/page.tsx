@@ -79,7 +79,7 @@ function EventHistoryReportPage() {
     // Add lease events
     if (leases) {
       leases.forEach(lease => {
-        const property = properties.find(p => p.id === lease.property?.id);
+        const property = properties.find(p => p.id === lease.unit?.property_id);
         const tenant = lease.primary_tenant;
         
         // Lease start event
