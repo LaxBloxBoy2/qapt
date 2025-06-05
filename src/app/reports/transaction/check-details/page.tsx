@@ -56,8 +56,8 @@ function CheckDetailsReportPage() {
     if (!transactions) return;
 
     // Filter for check payments only
-    const checkTransactions = transactions.filter(t => 
-      t.payment_method === 'check' || t.payment_method === 'Check'
+    const checkTransactions = transactions.filter(t =>
+      t.payment_method === 'check'
     );
 
     const checkEntries: CheckDetailEntry[] = checkTransactions.map((transaction, index) => {

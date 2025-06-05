@@ -102,7 +102,7 @@ function LeasesEndingReportPage() {
         rent_amount: lease.rent_amount || 0,
         security_deposit: lease.deposit_amount || 0,
         days_until_expiry: daysUntilExpiry,
-        renewal_status,
+        renewal_status: renewalStatus,
         notice_given: renewalStatus === 'vacating',
       };
     });
