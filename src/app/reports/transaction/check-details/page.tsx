@@ -264,7 +264,7 @@ function CheckDetailsReportPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
             <ReportFilters
@@ -284,56 +284,56 @@ function CheckDetailsReportPage() {
           </div>
 
           {/* Report Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-4">
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Checks</p>
-                      <p className="text-2xl font-bold">{stats.total}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Total Checks</p>
+                      <p className="text-xl font-bold">{stats.total}</p>
                     </div>
-                    <i className="ri-file-paper-line text-2xl text-blue-500" />
+                    <i className="ri-file-paper-line text-lg text-blue-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Pending</p>
-                      <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Pending</p>
+                      <p className="text-xl font-bold text-yellow-600">{stats.pending}</p>
                     </div>
-                    <i className="ri-time-line text-2xl text-yellow-500" />
+                    <i className="ri-time-line text-lg text-yellow-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Cleared</p>
-                      <p className="text-2xl font-bold text-green-600">{stats.cleared}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Cleared</p>
+                      <p className="text-xl font-bold text-green-600">{stats.cleared}</p>
                       <p className="text-xs text-gray-500">
                         {stats.total > 0 ? Math.round((stats.cleared / stats.total) * 100) : 0}%
                       </p>
                     </div>
-                    <i className="ri-check-line text-2xl text-green-500" />
+                    <i className="ri-check-line text-lg text-green-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Amount</p>
-                      <p className="text-2xl font-bold text-purple-600">{formatCurrency(stats.totalAmount)}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Total Amount</p>
+                      <p className="text-xl font-bold text-purple-600">{formatCurrency(stats.totalAmount)}</p>
                     </div>
-                    <i className="ri-money-dollar-circle-line text-2xl text-purple-500" />
+                    <i className="ri-money-dollar-circle-line text-lg text-purple-500" />
                   </div>
                 </CardContent>
               </Card>
@@ -341,63 +341,63 @@ function CheckDetailsReportPage() {
 
             {/* Check Details Table */}
             <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Check Register</CardTitle>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Check Register</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <i className="ri-loader-4-line animate-spin text-2xl text-gray-400" />
-                    <span className="ml-2 text-gray-600">Loading check details...</span>
+                  <div className="flex items-center justify-center py-6">
+                    <i className="ri-loader-4-line animate-spin text-xl text-gray-400" />
+                    <span className="ml-2 text-gray-600 text-sm">Loading check details...</span>
                   </div>
                 ) : checkDetails.length === 0 ? (
-                  <div className="text-center py-8">
-                    <i className="ri-file-paper-line text-4xl text-gray-400 mb-2 block" />
-                    <p className="text-gray-600">No check transactions found matching your criteria.</p>
+                  <div className="text-center py-6">
+                    <i className="ri-file-paper-line text-3xl text-gray-400 mb-2 block" />
+                    <p className="text-gray-600 text-sm">No check transactions found matching your criteria.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-2 text-sm font-medium">Check #</th>
-                          <th className="text-left p-2 text-sm font-medium">Date</th>
-                          <th className="text-left p-2 text-sm font-medium">Property</th>
-                          <th className="text-left p-2 text-sm font-medium">Payee</th>
-                          <th className="text-left p-2 text-sm font-medium">Description</th>
-                          <th className="text-left p-2 text-sm font-medium">Memo</th>
-                          <th className="text-center p-2 text-sm font-medium">Type</th>
-                          <th className="text-right p-2 text-sm font-medium">Amount</th>
-                          <th className="text-left p-2 text-sm font-medium">Cleared Date</th>
-                          <th className="text-center p-2 text-sm font-medium">Status</th>
+                        <tr className="border-b bg-gray-50 dark:bg-gray-800">
+                          <th className="text-left px-3 py-2 text-xs font-medium">Check #</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Date</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Property</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Payee</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Description</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Memo</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Type</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Amount</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Cleared Date</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {checkDetails.map((check) => (
                           <tr key={check.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-2 font-mono text-sm font-medium">{check.check_number}</td>
-                            <td className="p-2 text-sm">{formatDate(check.date)}</td>
-                            <td className="p-2 text-sm">{check.property_name}</td>
-                            <td className="p-2 text-sm font-medium">{check.payee}</td>
-                            <td className="p-2 text-sm">{check.description}</td>
-                            <td className="p-2 text-sm text-gray-600">{check.memo}</td>
-                            <td className="p-2 text-center">{getTypeIcon(check.type)}</td>
-                            <td className="p-2 text-right font-medium text-sm">
+                            <td className="px-3 py-2 font-mono text-xs font-medium">{check.check_number}</td>
+                            <td className="px-3 py-2 text-xs">{formatDate(check.date)}</td>
+                            <td className="px-3 py-2 text-xs">{check.property_name}</td>
+                            <td className="px-3 py-2 text-xs font-medium">{check.payee}</td>
+                            <td className="px-3 py-2 text-xs">{check.description}</td>
+                            <td className="px-3 py-2 text-xs text-gray-600">{check.memo}</td>
+                            <td className="px-3 py-2 text-center">{getTypeIcon(check.type)}</td>
+                            <td className="px-3 py-2 text-right font-medium text-xs">
                               <span className={check.type === 'income' ? 'text-green-600' : 'text-red-600'}>
                                 {check.type === 'income' ? '+' : '-'}{formatCurrency(check.amount)}
                               </span>
                             </td>
-                            <td className="p-2 text-sm">
+                            <td className="px-3 py-2 text-xs">
                               {check.cleared_date ? formatDate(check.cleared_date) : '-'}
                             </td>
-                            <td className="p-2 text-center">{getStatusBadge(check.status)}</td>
+                            <td className="px-3 py-2 text-center">{getStatusBadge(check.status)}</td>
                           </tr>
                         ))}
                         {/* Totals Row */}
-                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-50 dark:bg-gray-800">
-                          <td className="p-2 text-sm" colSpan={7}>TOTALS ({stats.total} checks)</td>
-                          <td className="p-2 text-right text-sm">{formatCurrency(stats.totalAmount)}</td>
-                          <td className="p-2" colSpan={2}></td>
+                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-100 dark:bg-gray-700">
+                          <td className="px-3 py-2 text-xs" colSpan={7}>TOTALS ({stats.total} checks)</td>
+                          <td className="px-3 py-2 text-right text-xs">{formatCurrency(stats.totalAmount)}</td>
+                          <td className="px-3 py-2" colSpan={2}></td>
                         </tr>
                       </tbody>
                     </table>
