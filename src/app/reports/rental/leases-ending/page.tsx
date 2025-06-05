@@ -262,7 +262,7 @@ function LeasesEndingReportPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
             <ReportFilters
@@ -282,54 +282,54 @@ function LeasesEndingReportPage() {
           </div>
 
           {/* Report Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-4">
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Ending</p>
-                      <p className="text-2xl font-bold">{stats.total}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Total Ending</p>
+                      <p className="text-xl font-bold">{stats.total}</p>
                     </div>
-                    <i className="ri-calendar-event-line text-2xl text-blue-500" />
+                    <i className="ri-calendar-event-line text-lg text-blue-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Urgent (≤7 days)</p>
-                      <p className="text-2xl font-bold text-red-600">{stats.urgent}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Urgent (≤7 days)</p>
+                      <p className="text-xl font-bold text-red-600">{stats.urgent}</p>
                     </div>
-                    <i className="ri-alarm-warning-line text-2xl text-red-500" />
+                    <i className="ri-alarm-warning-line text-lg text-red-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Not Contacted</p>
-                      <p className="text-2xl font-bold text-orange-600">{stats.notContacted}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Not Contacted</p>
+                      <p className="text-xl font-bold text-orange-600">{stats.notContacted}</p>
                     </div>
-                    <i className="ri-phone-line text-2xl text-orange-500" />
+                    <i className="ri-phone-line text-lg text-orange-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Monthly Rent</p>
-                      <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.totalRent)}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Monthly Rent</p>
+                      <p className="text-xl font-bold text-green-600">{formatCurrency(stats.totalRent)}</p>
                       <p className="text-xs text-gray-500">At risk</p>
                     </div>
-                    <i className="ri-money-dollar-circle-line text-2xl text-green-500" />
+                    <i className="ri-money-dollar-circle-line text-lg text-green-500" />
                   </div>
                 </CardContent>
               </Card>
@@ -337,67 +337,67 @@ function LeasesEndingReportPage() {
 
             {/* Leases Ending Table */}
             <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Leases Ending</CardTitle>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Leases Ending</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <i className="ri-loader-4-line animate-spin text-2xl text-gray-400" />
-                    <span className="ml-2 text-gray-600">Loading leases ending...</span>
+                  <div className="flex items-center justify-center py-6">
+                    <i className="ri-loader-4-line animate-spin text-xl text-gray-400" />
+                    <span className="ml-2 text-gray-600 text-sm">Loading leases ending...</span>
                   </div>
                 ) : leasesEnding.length === 0 ? (
-                  <div className="text-center py-8">
-                    <i className="ri-calendar-check-line text-4xl text-green-400 mb-2 block" />
-                    <p className="text-gray-600">No leases ending in the specified timeframe.</p>
+                  <div className="text-center py-6">
+                    <i className="ri-calendar-check-line text-3xl text-green-400 mb-2 block" />
+                    <p className="text-gray-600 text-sm">No leases ending in the specified timeframe.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-2 text-sm font-medium">Property</th>
-                          <th className="text-left p-2 text-sm font-medium">Unit</th>
-                          <th className="text-left p-2 text-sm font-medium">Tenant</th>
-                          <th className="text-left p-2 text-sm font-medium">Contact</th>
-                          <th className="text-left p-2 text-sm font-medium">Lease End</th>
-                          <th className="text-center p-2 text-sm font-medium">Days Left</th>
-                          <th className="text-center p-2 text-sm font-medium">Urgency</th>
-                          <th className="text-right p-2 text-sm font-medium">Rent</th>
-                          <th className="text-center p-2 text-sm font-medium">Status</th>
+                        <tr className="border-b bg-gray-50 dark:bg-gray-800">
+                          <th className="text-left px-3 py-2 text-xs font-medium">Property</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Unit</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Tenant</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Contact</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Lease End</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Days Left</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Urgency</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Rent</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {leasesEnding.map((lease) => (
                           <tr key={lease.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-2 font-medium text-sm">{lease.property_name}</td>
-                            <td className="p-2 text-sm">{lease.unit_name}</td>
-                            <td className="p-2 text-sm">{lease.tenant_name}</td>
-                            <td className="p-2 text-sm">
-                              <div>
-                                {lease.email && <div>{lease.email}</div>}
+                            <td className="px-3 py-2 font-medium text-xs">{lease.property_name}</td>
+                            <td className="px-3 py-2 text-xs">{lease.unit_name}</td>
+                            <td className="px-3 py-2 text-xs">{lease.tenant_name}</td>
+                            <td className="px-3 py-2 text-xs">
+                              <div className="space-y-1">
+                                {lease.email && <div className="truncate max-w-32">{lease.email}</div>}
                                 {lease.phone && <div>{lease.phone}</div>}
                               </div>
                             </td>
-                            <td className="p-2 text-sm">{formatDate(lease.lease_end)}</td>
-                            <td className="p-2 text-center text-sm">
+                            <td className="px-3 py-2 text-xs">{formatDate(lease.lease_end)}</td>
+                            <td className="px-3 py-2 text-center text-xs">
                               <span className={`font-medium ${
-                                lease.days_until_expiry <= 7 ? 'text-red-600' : 
+                                lease.days_until_expiry <= 7 ? 'text-red-600' :
                                 lease.days_until_expiry <= 30 ? 'text-yellow-600' : 'text-green-600'
                               }`}>
                                 {lease.days_until_expiry}
                               </span>
                             </td>
-                            <td className="p-2 text-center">{getUrgencyBadge(lease.days_until_expiry)}</td>
-                            <td className="p-2 text-right font-medium text-sm">{formatCurrency(lease.rent_amount)}</td>
-                            <td className="p-2 text-center">{getRenewalStatusBadge(lease.renewal_status)}</td>
+                            <td className="px-3 py-2 text-center">{getUrgencyBadge(lease.days_until_expiry)}</td>
+                            <td className="px-3 py-2 text-right font-medium text-xs">{formatCurrency(lease.rent_amount)}</td>
+                            <td className="px-3 py-2 text-center">{getRenewalStatusBadge(lease.renewal_status)}</td>
                           </tr>
                         ))}
                         {/* Totals Row */}
-                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-50 dark:bg-gray-800">
-                          <td className="p-2 text-sm" colSpan={7}>TOTALS ({stats.total} leases)</td>
-                          <td className="p-2 text-right text-sm">{formatCurrency(stats.totalRent)}</td>
-                          <td className="p-2"></td>
+                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-100 dark:bg-gray-700">
+                          <td className="px-3 py-2 text-xs" colSpan={7}>TOTALS ({stats.total} leases)</td>
+                          <td className="px-3 py-2 text-right text-xs">{formatCurrency(stats.totalRent)}</td>
+                          <td className="px-3 py-2"></td>
                         </tr>
                       </tbody>
                     </table>

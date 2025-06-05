@@ -125,26 +125,26 @@ export function ReportFilters({
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center justify-between text-base">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
-            <i className="ri-filter-line text-sm" />
-            <span className="text-sm font-medium">Report Filters</span>
+            <i className="ri-filter-line text-xs" />
+            <span className="text-xs font-medium">Filters</span>
             {getActiveFilterCount() > 0 && (
-              <Badge variant="secondary" className="text-xs h-5">{getActiveFilterCount()} active</Badge>
+              <Badge variant="secondary" className="text-xs h-4 px-1">{getActiveFilterCount()}</Badge>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-xs h-6 px-2">
-              Clear All
+            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-xs h-5 px-1">
+              Clear
             </Button>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3">
         {/* Properties Filter */}
         {showPropertyFilter && availableProperties.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label className="text-xs font-medium">Properties</Label>
             <div className="space-y-1">
               <div className="flex items-center space-x-2">
@@ -162,18 +162,18 @@ export function ReportFilters({
                     }
                   }}
                 />
-                <Label htmlFor="all-properties" className="text-sm font-medium">
+                <Label htmlFor="all-properties" className="text-xs font-medium">
                   All Properties
                 </Label>
               </div>
               {availableProperties.map((property) => (
-                <div key={property.id} className="flex items-center space-x-2 ml-6">
+                <div key={property.id} className="flex items-center space-x-2 ml-4">
                   <Checkbox
                     id={`property-${property.id}`}
                     checked={selectedProperties.includes(property.id)}
                     onCheckedChange={() => handlePropertyToggle(property.id)}
                   />
-                  <Label htmlFor={`property-${property.id}`} className="text-sm">
+                  <Label htmlFor={`property-${property.id}`} className="text-xs">
                     {property.name}
                   </Label>
                 </div>
@@ -264,9 +264,9 @@ export function ReportFilters({
 
         {/* Date Range */}
         {showDateRange && (
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label className="text-xs font-medium">Date Range</Label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2">
               <div>
                 <Label htmlFor="date-from" className="text-xs text-gray-600">From</Label>
                 <Input
@@ -274,6 +274,7 @@ export function ReportFilters({
                   type="date"
                   value={filters.dateFrom}
                   onChange={(e) => updateFilters({ dateFrom: e.target.value })}
+                  className="h-8 text-xs"
                 />
               </div>
               <div>
@@ -283,6 +284,7 @@ export function ReportFilters({
                   type="date"
                   value={filters.dateTo}
                   onChange={(e) => updateFilters({ dateTo: e.target.value })}
+                  className="h-8 text-xs"
                 />
               </div>
             </div>
@@ -291,10 +293,10 @@ export function ReportFilters({
 
         {/* Status Filter */}
         {showStatusFilter && (
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label className="text-xs font-medium">Status</Label>
             <Select value={filters.status} onValueChange={(value) => updateFilters({ status: value })}>
-              <SelectTrigger>
+              <SelectTrigger className="h-8 text-xs">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
@@ -309,41 +311,42 @@ export function ReportFilters({
         )}
 
         {/* Search */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <Label className="text-xs font-medium">Search</Label>
           <Input
             placeholder="Search..."
             value={filters.search}
             onChange={(e) => updateFilters({ search: e.target.value })}
+            className="h-8 text-xs"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-3 pt-4 border-t">
-          <Button onClick={onRunReport} disabled={isLoading} className="w-full">
+        <div className="flex flex-col gap-2 pt-3 border-t">
+          <Button onClick={onRunReport} disabled={isLoading} className="w-full h-8 text-xs">
             {isLoading ? (
               <>
-                <i className="ri-loader-4-line animate-spin mr-2" />
-                Generating Report...
+                <i className="ri-loader-4-line animate-spin mr-1" />
+                Generating...
               </>
             ) : (
               <>
-                <i className="ri-play-line mr-2" />
+                <i className="ri-play-line mr-1" />
                 Run Report
               </>
             )}
           </Button>
-          
-          <div className="grid grid-cols-3 gap-2">
-            <Button variant="outline" size="sm" onClick={() => onExport('pdf')}>
+
+          <div className="grid grid-cols-3 gap-1">
+            <Button variant="outline" size="sm" onClick={() => onExport('pdf')} className="h-7 text-xs px-1">
               <i className="ri-file-pdf-line mr-1" />
               PDF
             </Button>
-            <Button variant="outline" size="sm" onClick={() => onExport('excel')}>
+            <Button variant="outline" size="sm" onClick={() => onExport('excel')} className="h-7 text-xs px-1">
               <i className="ri-file-excel-line mr-1" />
-              Excel
+              XLS
             </Button>
-            <Button variant="outline" size="sm" onClick={() => onExport('csv')}>
+            <Button variant="outline" size="sm" onClick={() => onExport('csv')} className="h-7 text-xs px-1">
               <i className="ri-file-text-line mr-1" />
               CSV
             </Button>

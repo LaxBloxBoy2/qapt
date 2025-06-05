@@ -254,7 +254,7 @@ function RentRollReportPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
             <ReportFilters
@@ -274,60 +274,60 @@ function RentRollReportPage() {
           </div>
 
           {/* Report Content */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 space-y-4">
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Total Units</p>
-                      <p className="text-2xl font-bold">{rentRollData.length}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Total Units</p>
+                      <p className="text-xl font-bold">{rentRollData.length}</p>
                     </div>
-                    <i className="ri-home-line text-2xl text-blue-500" />
+                    <i className="ri-home-line text-lg text-blue-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Occupied</p>
-                      <p className="text-2xl font-bold text-green-600">{occupiedUnits}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Occupied</p>
+                      <p className="text-xl font-bold text-green-600">{occupiedUnits}</p>
                       <p className="text-xs text-gray-500">
                         {rentRollData.length > 0 ? Math.round((occupiedUnits / rentRollData.length) * 100) : 0}% occupancy
                       </p>
                     </div>
-                    <i className="ri-user-line text-2xl text-green-500" />
+                    <i className="ri-user-line text-lg text-green-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Vacant</p>
-                      <p className="text-2xl font-bold text-yellow-600">{vacantUnits}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Vacant</p>
+                      <p className="text-xl font-bold text-yellow-600">{vacantUnits}</p>
                       <p className="text-xs text-gray-500">
                         {rentRollData.length > 0 ? Math.round((vacantUnits / rentRollData.length) * 100) : 0}% vacancy
                       </p>
                     </div>
-                    <i className="ri-home-2-line text-2xl text-yellow-500" />
+                    <i className="ri-home-2-line text-lg text-yellow-500" />
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Late Payments</p>
-                      <p className="text-2xl font-bold text-red-600">{lateUnits}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Late Payments</p>
+                      <p className="text-xl font-bold text-red-600">{lateUnits}</p>
                       <p className="text-xs text-gray-500">{formatCurrency(totals.balance_due)}</p>
                     </div>
-                    <i className="ri-alarm-warning-line text-2xl text-red-500" />
+                    <i className="ri-alarm-warning-line text-lg text-red-500" />
                   </div>
                 </CardContent>
               </Card>
@@ -335,49 +335,49 @@ function RentRollReportPage() {
 
             {/* Rent Roll Table */}
             <Card>
-              <CardHeader>
-                <CardTitle>Rent Roll</CardTitle>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Rent Roll</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-0">
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <i className="ri-loader-4-line animate-spin text-2xl text-gray-400" />
-                    <span className="ml-2 text-gray-600">Loading rent roll...</span>
+                  <div className="flex items-center justify-center py-6">
+                    <i className="ri-loader-4-line animate-spin text-xl text-gray-400" />
+                    <span className="ml-2 text-gray-600 text-sm">Loading rent roll...</span>
                   </div>
                 ) : rentRollData.length === 0 ? (
-                  <div className="text-center py-8">
-                    <i className="ri-home-line text-4xl text-gray-400 mb-2 block" />
-                    <p className="text-gray-600">No units found matching your criteria.</p>
+                  <div className="text-center py-6">
+                    <i className="ri-home-line text-3xl text-gray-400 mb-2 block" />
+                    <p className="text-gray-600 text-sm">No units found matching your criteria.</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-3">Property</th>
-                          <th className="text-left p-3">Unit</th>
-                          <th className="text-left p-3">Tenant</th>
-                          <th className="text-left p-3">Lease Start</th>
-                          <th className="text-left p-3">Lease End</th>
-                          <th className="text-right p-3">Market Rent</th>
-                          <th className="text-right p-3">Current Rent</th>
-                          <th className="text-right p-3">Security Deposit</th>
-                          <th className="text-right p-3">Balance Due</th>
-                          <th className="text-center p-3">Status</th>
+                        <tr className="border-b bg-gray-50 dark:bg-gray-800">
+                          <th className="text-left px-3 py-2 text-xs font-medium">Property</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Unit</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Tenant</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Lease Start</th>
+                          <th className="text-left px-3 py-2 text-xs font-medium">Lease End</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Market Rent</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Current Rent</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Security Deposit</th>
+                          <th className="text-right px-3 py-2 text-xs font-medium">Balance Due</th>
+                          <th className="text-center px-3 py-2 text-xs font-medium">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {rentRollData.map((entry, index) => (
                           <tr key={index} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-3 font-medium">{entry.property_name}</td>
-                            <td className="p-3">{entry.unit_name}</td>
-                            <td className="p-3">{entry.tenant_name}</td>
-                            <td className="p-3">{formatDate(entry.lease_start)}</td>
-                            <td className="p-3">{formatDate(entry.lease_end)}</td>
-                            <td className="p-3 text-right">{formatCurrency(entry.market_rent)}</td>
-                            <td className="p-3 text-right">{formatCurrency(entry.current_rent)}</td>
-                            <td className="p-3 text-right">{formatCurrency(entry.security_deposit)}</td>
-                            <td className="p-3 text-right">
+                            <td className="px-3 py-2 font-medium text-xs">{entry.property_name}</td>
+                            <td className="px-3 py-2 text-xs">{entry.unit_name}</td>
+                            <td className="px-3 py-2 text-xs">{entry.tenant_name}</td>
+                            <td className="px-3 py-2 text-xs">{formatDate(entry.lease_start)}</td>
+                            <td className="px-3 py-2 text-xs">{formatDate(entry.lease_end)}</td>
+                            <td className="px-3 py-2 text-right text-xs">{formatCurrency(entry.market_rent)}</td>
+                            <td className="px-3 py-2 text-right text-xs">{formatCurrency(entry.current_rent)}</td>
+                            <td className="px-3 py-2 text-right text-xs">{formatCurrency(entry.security_deposit)}</td>
+                            <td className="px-3 py-2 text-right text-xs">
                               {entry.balance_due > 0 ? (
                                 <span className="text-red-600 font-medium">
                                   {formatCurrency(entry.balance_due)}
@@ -386,17 +386,17 @@ function RentRollReportPage() {
                                 <span className="text-gray-500">-</span>
                               )}
                             </td>
-                            <td className="p-3 text-center">{getStatusBadge(entry.status)}</td>
+                            <td className="px-3 py-2 text-center">{getStatusBadge(entry.status)}</td>
                           </tr>
                         ))}
                         {/* Totals Row */}
-                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-50 dark:bg-gray-800">
-                          <td className="p-3" colSpan={5}>TOTALS</td>
-                          <td className="p-3 text-right">{formatCurrency(totals.market_rent)}</td>
-                          <td className="p-3 text-right">{formatCurrency(totals.current_rent)}</td>
-                          <td className="p-3 text-right">{formatCurrency(totals.security_deposits)}</td>
-                          <td className="p-3 text-right text-red-600">{formatCurrency(totals.balance_due)}</td>
-                          <td className="p-3"></td>
+                        <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-100 dark:bg-gray-700">
+                          <td className="px-3 py-2 text-xs" colSpan={5}>TOTALS</td>
+                          <td className="px-3 py-2 text-right text-xs">{formatCurrency(totals.market_rent)}</td>
+                          <td className="px-3 py-2 text-right text-xs">{formatCurrency(totals.current_rent)}</td>
+                          <td className="px-3 py-2 text-right text-xs">{formatCurrency(totals.security_deposits)}</td>
+                          <td className="px-3 py-2 text-right text-red-600 text-xs">{formatCurrency(totals.balance_due)}</td>
+                          <td className="px-3 py-2"></td>
                         </tr>
                       </tbody>
                     </table>
