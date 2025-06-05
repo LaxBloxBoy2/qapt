@@ -132,7 +132,7 @@ function BalanceSheetReportPage() {
 
     // Mock data for other balance sheet items (in a real app, these would come from other sources)
     const security_deposits = 25000; // Mock security deposits held
-    const property_value = properties.reduce((sum, p) => sum + (p.purchase_price || 500000), 0);
+    const property_value = properties.reduce((sum, p) => sum + 500000, 0); // Mock property value per property
     const equipment = 15000; // Mock equipment value
     
     const accounts_payable = filteredTransactions
