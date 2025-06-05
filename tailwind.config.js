@@ -86,7 +86,7 @@ module.exports = {
   		},
   		fontFamily: {
   			sans: [
-  				'var(--font-inter)',
+  				'var(--font-jakarta)',
   				'sans-serif'
   			],
   			poppins: [

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import "remixicon/fonts/remixicon.css";
 import { UserProvider } from "@/contexts/UserContext";
@@ -8,9 +8,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { AutoFix } from "@/components/AutoFix";
 import Script from "next/script";
 
-const inter = Inter({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-jakarta",
 });
 
 const poppins = Poppins({
@@ -35,7 +35,7 @@ export default function RootLayout({
         {/* Add the content-fix script with the highest priority */}
         <Script src="/content-fix.js" strategy="beforeInteractive" />
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className={`${jakarta.variable} ${poppins.variable} font-sans`}>
         <QueryProvider>
           <UserProvider>
             <AutoFix />
