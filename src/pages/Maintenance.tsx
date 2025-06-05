@@ -49,7 +49,6 @@ export default function Maintenance() {
               <i className="ri-tools-line text-xl text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Maintenance Hub</h1>
               <p className="text-gray-600 dark:text-gray-400">
                 Streamline maintenance operations across all properties
               </p>
