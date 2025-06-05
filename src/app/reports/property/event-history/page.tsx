@@ -71,9 +71,7 @@ function EventHistoryReportPage() {
           description: request.description || 'Maintenance request',
           status: request.status,
           priority: request.priority,
-          assigned_to: request.assigned_to?.first_name && request.assigned_to?.last_name 
-            ? `${request.assigned_to.first_name} ${request.assigned_to.last_name}`
-            : undefined,
+          assigned_to: request.assigned_to?.name,
         });
       });
     }
