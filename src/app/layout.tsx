@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Pacifico } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import "remixicon/fonts/remixicon.css";
 import { UserProvider } from "@/contexts/UserContext";
@@ -8,19 +8,19 @@ import { Toaster } from "@/components/ui/toaster";
 import { AutoFix } from "@/components/AutoFix";
 import Script from "next/script";
 
-const jakarta = Plus_Jakarta_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-inter",
 });
 
-const pacifico = Pacifico({
-  weight: "400",
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-pacifico",
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
-  title: "QAPT - Property Management Software",
+  title: "LeaseRidge - Property Management Software",
   description: "Modern property management software for landlords and property managers",
 };
 
@@ -35,7 +35,7 @@ export default function RootLayout({
         {/* Add the content-fix script with the highest priority */}
         <Script src="/content-fix.js" strategy="beforeInteractive" />
       </head>
-      <body className={`${jakarta.variable} ${pacifico.variable} font-sans`}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <QueryProvider>
           <UserProvider>
             <AutoFix />

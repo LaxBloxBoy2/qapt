@@ -86,12 +86,12 @@ module.exports = {
   		},
   		fontFamily: {
   			sans: [
-  				'var(--font-jakarta)',
+  				'var(--font-inter)',
   				'sans-serif'
   			],
-  			logo: [
-  				'var(--font-pacifico)',
-  				'cursive'
+  			poppins: [
+  				'var(--font-poppins)',
+  				'sans-serif'
   			]
   		},
   		keyframes: {

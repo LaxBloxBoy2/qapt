@@ -18,7 +18,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
   };
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="qapt-theme">
+    <ThemeProvider defaultTheme="light" storageKey="leaseridge-theme">
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <Sidebar collapsed={sidebarCollapsed} toggleSidebar={toggleSidebar} />
 

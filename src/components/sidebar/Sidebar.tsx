@@ -275,7 +275,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
       <div className="flex items-center justify-between p-4 border-b border-primary-600">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <span className="font-logo text-2xl text-white">QAPT</span>
+            <span className="font-poppins text-2xl text-white font-semibold">LeaseRidge</span>
           </div>
         )}
         <button
