@@ -76,6 +76,7 @@ function AppliancesPage() {
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Appliances</h1>
             <p className="text-muted-foreground">
               Manage your property appliances and equipment
             </p>

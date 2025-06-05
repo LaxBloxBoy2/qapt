@@ -173,6 +173,7 @@ function ReportsPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Reports</h1>
             <p className="text-gray-600 dark:text-gray-400">
               Generate comprehensive reports for your property management business
             </p>
