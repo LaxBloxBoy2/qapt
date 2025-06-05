@@ -61,17 +61,23 @@ function AppliancesReportPage() {
       if (appliance.warranty_expiration && new Date(appliance.warranty_expiration) < currentDate) {
         status = 'warranty_expired';
       }
-      
-      if (appliance.next_service_date && new Date(appliance.next_service_date) <= currentDate) {
-        status = 'needs_service';
+
+      // Check if service is due based on last maintenance date (6 months ago)
+      if (appliance.last_maintenance_date) {
+        const lastMaintenance = new Date(appliance.last_maintenance_date);
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        if (lastMaintenance <= sixMonthsAgo) {
+          status = 'needs_service';
+        }
       }
 
-      // Calculate next service due (6 months from last service or installation)
+      // Calculate next service due (6 months from last maintenance or installation)
       let nextServiceDue = '';
-      if (appliance.last_service_date) {
-        const lastService = new Date(appliance.last_service_date);
-        lastService.setMonth(lastService.getMonth() + 6);
-        nextServiceDue = lastService.toISOString().split('T')[0];
+      if (appliance.last_maintenance_date) {
+        const lastMaintenance = new Date(appliance.last_maintenance_date);
+        lastMaintenance.setMonth(lastMaintenance.getMonth() + 6);
+        nextServiceDue = lastMaintenance.toISOString().split('T')[0];
       } else if (appliance.installation_date) {
         const installation = new Date(appliance.installation_date);
         installation.setMonth(installation.getMonth() + 6);
@@ -89,7 +95,7 @@ function AppliancesReportPage() {
         serial_number: appliance.serial_number || '',
         installation_date: appliance.installation_date || '',
         warranty_expiration: appliance.warranty_expiration || '',
-        last_service_date: appliance.last_service_date || '',
+        last_service_date: appliance.last_maintenance_date || '',
         next_service_due: nextServiceDue,
         status: status,
       };
