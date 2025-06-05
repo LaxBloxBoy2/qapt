@@ -125,28 +125,28 @@ export function ReportFilters({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center justify-between text-base">
           <div className="flex items-center gap-2">
-            <i className="ri-filter-line" />
-            Report Filters
+            <i className="ri-filter-line text-sm" />
+            <span className="text-sm font-medium">Report Filters</span>
             {getActiveFilterCount() > 0 && (
-              <Badge variant="secondary">{getActiveFilterCount()} active</Badge>
+              <Badge variant="secondary" className="text-xs h-5">{getActiveFilterCount()} active</Badge>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+            <Button variant="ghost" size="sm" onClick={clearAllFilters} className="text-xs h-6 px-2">
               Clear All
             </Button>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* Properties Filter */}
         {showPropertyFilter && availableProperties.length > 0 && (
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Properties</Label>
-            <div className="space-y-2">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">Properties</Label>
+            <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="all-properties"
@@ -184,9 +184,9 @@ export function ReportFilters({
 
         {/* Categories Filter */}
         {showCategoryFilter && availableCategories.length > 0 && (
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Categories</Label>
-            <div className="space-y-2">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">Categories</Label>
+            <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="all-categories"
@@ -224,9 +224,9 @@ export function ReportFilters({
 
         {/* Assignees Filter */}
         {showAssigneeFilter && availableAssignees.length > 0 && (
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Assigned To</Label>
-            <div className="space-y-2">
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">Assigned To</Label>
+            <div className="space-y-1">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="all-assignees"
@@ -264,8 +264,8 @@ export function ReportFilters({
 
         {/* Date Range */}
         {showDateRange && (
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Date Range</Label>
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">Date Range</Label>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <Label htmlFor="date-from" className="text-xs text-gray-600">From</Label>
@@ -291,8 +291,8 @@ export function ReportFilters({
 
         {/* Status Filter */}
         {showStatusFilter && (
-          <div className="space-y-3">
-            <Label className="text-sm font-medium">Status</Label>
+          <div className="space-y-2">
+            <Label className="text-xs font-medium">Status</Label>
             <Select value={filters.status} onValueChange={(value) => updateFilters({ status: value })}>
               <SelectTrigger>
                 <SelectValue placeholder="Select status" />
@@ -309,8 +309,8 @@ export function ReportFilters({
         )}
 
         {/* Search */}
-        <div className="space-y-3">
-          <Label className="text-sm font-medium">Search</Label>
+        <div className="space-y-2">
+          <Label className="text-xs font-medium">Search</Label>
           <Input
             placeholder="Search..."
             value={filters.search}

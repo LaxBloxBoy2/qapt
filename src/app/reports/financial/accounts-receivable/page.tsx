@@ -347,8 +347,8 @@ function AccountsReceivableReportPage() {
 
             {/* Accounts Receivable Table */}
             <Card>
-              <CardHeader>
-                <CardTitle>Outstanding Receivables</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Outstanding Receivables</CardTitle>
               </CardHeader>
               <CardContent>
                 {isLoading ? (
@@ -366,42 +366,42 @@ function AccountsReceivableReportPage() {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b">
-                          <th className="text-left p-3">Property</th>
-                          <th className="text-left p-3">Unit</th>
-                          <th className="text-left p-3">Tenant</th>
-                          <th className="text-left p-3">Description</th>
-                          <th className="text-left p-3">Due Date</th>
-                          <th className="text-right p-3">Amount Due</th>
-                          <th className="text-center p-3">Days Overdue</th>
-                          <th className="text-center p-3">Aging</th>
-                          <th className="text-center p-3">Status</th>
+                          <th className="text-left p-2 text-sm font-medium">Property</th>
+                          <th className="text-left p-2 text-sm font-medium">Unit</th>
+                          <th className="text-left p-2 text-sm font-medium">Tenant</th>
+                          <th className="text-left p-2 text-sm font-medium">Description</th>
+                          <th className="text-left p-2 text-sm font-medium">Due Date</th>
+                          <th className="text-right p-2 text-sm font-medium">Amount Due</th>
+                          <th className="text-center p-2 text-sm font-medium">Days Overdue</th>
+                          <th className="text-center p-2 text-sm font-medium">Aging</th>
+                          <th className="text-center p-2 text-sm font-medium">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {arData.map((item) => (
                           <tr key={item.id} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-3 font-medium">{item.property_name}</td>
-                            <td className="p-3">{item.unit_name}</td>
-                            <td className="p-3">{item.tenant_name}</td>
-                            <td className="p-3">{item.description}</td>
-                            <td className="p-3">{formatDate(item.due_date)}</td>
-                            <td className="p-3 text-right font-medium">{formatCurrency(item.amount_due)}</td>
-                            <td className="p-3 text-center">
+                            <td className="p-2 font-medium text-sm">{item.property_name}</td>
+                            <td className="p-2 text-sm">{item.unit_name}</td>
+                            <td className="p-2 text-sm">{item.tenant_name}</td>
+                            <td className="p-2 text-sm">{item.description}</td>
+                            <td className="p-2 text-sm">{formatDate(item.due_date)}</td>
+                            <td className="p-2 text-right font-medium text-sm">{formatCurrency(item.amount_due)}</td>
+                            <td className="p-2 text-center text-sm">
                               {item.days_overdue > 0 ? (
                                 <span className="text-red-600 font-medium">{item.days_overdue}</span>
                               ) : (
                                 <span className="text-gray-500">-</span>
                               )}
                             </td>
-                            <td className="p-3 text-center">{getAgingBadge(item.aging_category)}</td>
-                            <td className="p-3 text-center">{getStatusBadge(item.status)}</td>
+                            <td className="p-2 text-center">{getAgingBadge(item.aging_category)}</td>
+                            <td className="p-2 text-center">{getStatusBadge(item.status)}</td>
                           </tr>
                         ))}
                         {/* Totals Row */}
                         <tr className="border-t-2 border-gray-300 dark:border-gray-600 font-bold bg-gray-50 dark:bg-gray-800">
-                          <td className="p-3" colSpan={5}>TOTAL</td>
-                          <td className="p-3 text-right">{formatCurrency(totals.total)}</td>
-                          <td className="p-3" colSpan={3}></td>
+                          <td className="p-2 text-sm" colSpan={5}>TOTAL</td>
+                          <td className="p-2 text-right text-sm">{formatCurrency(totals.total)}</td>
+                          <td className="p-2" colSpan={3}></td>
                         </tr>
                       </tbody>
                     </table>
