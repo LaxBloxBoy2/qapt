@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { ReportFilters, type ReportFilters as ReportFiltersType } from "@/components/reports/ReportFilters";
 import { useGetProperties } from "@/hooks/useProperties";
-import { useGetMaintenanceRequests } from "@/hooks/useMaintenance";
+import { useMaintenanceRequests } from "@/hooks/useMaintenance";
 import { useLeases } from "@/hooks/useLeases";
 import { useTransactions } from "@/hooks/useFinances";
 
@@ -42,7 +42,7 @@ function EventHistoryReportPage() {
 
   // Fetch data
   const { data: properties } = useGetProperties();
-  const { data: maintenanceRequests } = useGetMaintenanceRequests();
+  const { data: maintenanceRequests } = useMaintenanceRequests();
   const { data: leases } = useLeases();
   const { data: transactions } = useTransactions({
     date_from: filters.dateFrom || undefined,
