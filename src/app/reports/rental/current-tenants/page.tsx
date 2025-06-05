@@ -95,7 +95,7 @@ function CurrentTenantsReportPage() {
         lease_end: lease.end_date,
         rent_amount: lease.rent_amount || 0,
         security_deposit: lease.deposit_amount || 0,
-        lease_status,
+        lease_status: leaseStatus,
         days_until_expiry: Math.max(0, daysUntilExpiry),
       };
     });
