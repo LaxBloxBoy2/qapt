@@ -105,7 +105,7 @@ function AccountsReceivableReportPage() {
         amount_due: transaction.amount || 0, // In a real system, this might be different if partial payments were made
         due_date: transaction.due_date || transaction.created_at,
         days_overdue: Math.max(0, daysOverdue),
-        aging_category,
+        aging_category: agingCategory,
         status,
       };
     });
