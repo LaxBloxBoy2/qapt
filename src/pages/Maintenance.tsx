@@ -153,7 +153,7 @@ export default function Maintenance() {
             <i className="ri-alarm-warning-line" />
             <span className="hidden sm:inline">Urgent</span>
             {urgentRequests.length > 0 && (
-              <Badge variant="destructive" className="ml-1 h-5 w-5 p-0 text-xs">
+              <Badge variant="destructive" className="ml-1 h-5 w-5 p-0 text-xs flex items-center justify-center">
                 {urgentRequests.length}
               </Badge>
             )}

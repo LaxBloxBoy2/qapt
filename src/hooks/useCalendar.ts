@@ -268,21 +268,36 @@ export function useCreateCustomEvent() {
 
   return useMutation({
     mutationFn: async (event: CreateCustomEvent) => {
+      // Ensure dates are properly formatted
+      const formatDate = (dateStr: string | undefined) => {
+        if (!dateStr) return null;
+        // If it's already in YYYY-MM-DD format, return as is
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+          return dateStr;
+        }
+        // Otherwise, try to parse and format
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) {
+          throw new Error(`Invalid date format: ${dateStr}`);
+        }
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      };
+
       const { data, error } = await supabase
         .from("custom_events")
         .insert([{
           title: event.title,
           description: event.description,
-          date: event.date,
-          end_date: event.endDate,
+          date: formatDate(event.date),
+          end_date: formatDate(event.endDate),
           time: event.time,
           all_day: event.allDay || false,
-          property_id: event.propertyId,
-          unit_id: event.unitId,
+          property_id: event.propertyId || null,
+          unit_id: event.unitId || null,
           tags: event.tags,
           is_recurring: event.isRecurring || false,
-          recurring_pattern: event.recurringPattern,
-          reminder_minutes: event.reminderMinutes,
+          recurring_pattern: event.recurringPattern || null,
+          reminder_minutes: event.reminderMinutes || null,
           status: 'upcoming'
         }])
         .select()

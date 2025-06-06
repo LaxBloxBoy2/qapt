@@ -32,8 +32,8 @@ import { useGetUnits } from "@/hooks/useUnits";
 const createEventSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
-  date: z.string().min(1, "Date is required"),
-  endDate: z.string().optional(),
+  date: z.string().min(1, "Date is required").regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format"),
+  endDate: z.string().optional().refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), "End date must be in YYYY-MM-DD format"),
   time: z.string().optional(),
   allDay: z.boolean(),
   propertyId: z.string().optional(),
