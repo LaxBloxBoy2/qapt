@@ -82,12 +82,7 @@ export default function Transactions() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Transactions</h1>
-          <p className="text-muted-foreground">
-            Manage your property income and expenses
-          </p>
-        </div>
+        <h1 className="text-2xl font-semibold">Transactions</h1>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleExport}>
             <i className="ri-download-line mr-2 h-4 w-4" />
