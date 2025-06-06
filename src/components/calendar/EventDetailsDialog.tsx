@@ -40,8 +40,8 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
         break;
       case 'complete':
         await completeEvent.mutateAsync({
-          eventId: event.relatedId,
-          eventType: event.relatedType
+          eventId: event.relatedId || event.id,
+          eventType: event.relatedType || event.type
         });
         onOpenChange(false);
         break;
@@ -53,6 +53,16 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
         // TODO: Open reschedule dialog
         console.log('Reschedule event:', event.id);
         break;
+    }
+  };
+
+  const handleCompleteEvent = async () => {
+    if (event.type === 'custom') {
+      await completeEvent.mutateAsync({
+        eventId: event.id,
+        eventType: 'custom_event'
+      });
+      onOpenChange(false);
     }
   };
 
@@ -204,25 +214,59 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
           <Separator />
 
           {/* Actions */}
-          {event.actions && event.actions.length > 0 && (
-            <div>
-              <h4 className="text-sm font-medium mb-3">Actions</h4>
-              <div className="flex flex-wrap gap-2">
-                {event.actions.map((action) => (
-                  <Button
-                    key={action.id}
-                    variant={action.variant || "outline"}
-                    size="sm"
-                    onClick={() => handleAction(action)}
-                    className="flex items-center gap-2"
-                  >
-                    <i className={`${action.icon} h-4 w-4`} />
-                    {action.label}
-                  </Button>
-                ))}
-              </div>
+          <div>
+            <h4 className="text-sm font-medium mb-3">Actions</h4>
+            <div className="flex flex-wrap gap-2">
+              {/* Reschedule Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => console.log('Reschedule event:', event.id)}
+                className="flex items-center gap-2"
+              >
+                <i className="ri-calendar-line h-4 w-4" />
+                Reschedule
+              </Button>
+
+              {/* Edit Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => console.log('Edit event:', event.id)}
+                className="flex items-center gap-2"
+              >
+                <i className="ri-edit-line h-4 w-4" />
+                Edit Event
+              </Button>
+
+              {/* Complete Event Button - only show if not completed */}
+              {event.status !== 'completed' && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={handleCompleteEvent}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
+                >
+                  <i className="ri-check-line h-4 w-4" />
+                  Complete Event
+                </Button>
+              )}
+
+              {/* Additional actions from event.actions if they exist */}
+              {event.actions && event.actions.map((action) => (
+                <Button
+                  key={action.id}
+                  variant={action.variant || "outline"}
+                  size="sm"
+                  onClick={() => handleAction(action)}
+                  className="flex items-center gap-2"
+                >
+                  <i className={`${action.icon} h-4 w-4`} />
+                  {action.label}
+                </Button>
+              ))}
             </div>
-          )}
+          </div>
         </div>
 
         <DialogFooter className="flex justify-between">

@@ -28,31 +28,35 @@ export function CalendarView({
   const calendarRef = useRef<FullCalendar>(null);
 
   // Convert our events to FullCalendar format
-  const fullCalendarEvents = events.map(event => ({
-    id: event.id,
-    title: formatEventTitle(event),
-    start: event.date,
-    end: event.endDate,
-    allDay: event.allDay,
-    backgroundColor: event.backgroundColor,
-    borderColor: event.borderColor,
-    textColor: event.color,
-    extendedProps: {
-      originalEvent: event,
-      icon: event.icon,
-      status: event.status,
-      type: event.type,
-      description: event.description,
-      property: event.property,
-      unit: event.unit,
-      assignee: event.assignee,
-    },
-    classNames: [
-      'calendar-event',
-      `event-${event.type}`,
-      `status-${event.status}`,
-    ],
-  }));
+  const fullCalendarEvents = events.map(event => {
+    const isCompleted = event.status === 'completed';
+    return {
+      id: event.id,
+      title: formatEventTitle(event),
+      start: event.date,
+      end: event.endDate,
+      allDay: event.allDay,
+      backgroundColor: isCompleted ? '#e5e7eb' : event.backgroundColor,
+      borderColor: isCompleted ? '#9ca3af' : event.borderColor,
+      textColor: isCompleted ? '#6b7280' : event.color,
+      extendedProps: {
+        originalEvent: event,
+        icon: event.icon,
+        status: event.status,
+        type: event.type,
+        description: event.description,
+        property: event.property,
+        unit: event.unit,
+        assignee: event.assignee,
+      },
+      classNames: [
+        'calendar-event',
+        `event-${event.type}`,
+        `status-${event.status}`,
+        isCompleted ? 'completed-event' : '',
+      ].filter(Boolean),
+    };
+  });
 
   // Get the correct view for FullCalendar
   const getCalendarView = (mode: CalendarViewMode) => {
@@ -124,10 +128,13 @@ export function CalendarView({
             moreLinkClick="popover"
             eventContent={(eventInfo) => {
               const event = eventInfo.event.extendedProps.originalEvent as CalendarEvent;
+              const isCompleted = event.status === 'completed';
               return (
-                <div className="flex items-center gap-1 p-1 text-xs">
+                <div className={`flex items-center gap-1 p-1 text-xs ${isCompleted ? 'opacity-70' : ''}`}>
                   <span className="text-sm">{event.icon}</span>
-                  <span className="truncate font-medium">{eventInfo.event.title}</span>
+                  <span className={`truncate font-medium ${isCompleted ? 'line-through text-gray-500' : ''}`}>
+                    {eventInfo.event.title}
+                  </span>
                   {event.status === 'overdue' && (
                     <i className="ri-alarm-warning-line text-red-500 ml-auto" />
                   )}
@@ -147,7 +154,7 @@ export function CalendarView({
                 'border',
                 'text-xs',
                 event.status === 'overdue' ? 'ring-2 ring-red-500' : '',
-                event.status === 'completed' ? 'opacity-60' : '',
+                event.status === 'completed' ? 'opacity-70 bg-gray-300 border-gray-400 text-gray-600' : '',
               ].filter(Boolean);
             }}
             dayCellClassNames="hover:bg-muted/50 cursor-pointer"
@@ -279,6 +286,16 @@ export function CalendarView({
             border: 1px solid hsl(var(--border));
             border-radius: 0.75rem;
             overflow: hidden;
+          }
+
+          /* Completed event styling */
+          .completed-event {
+            opacity: 0.7;
+          }
+
+          .completed-event .fc-event-title {
+            text-decoration: line-through;
+            color: #6b7280 !important;
           }
 
           .fc-col-header-cell {
