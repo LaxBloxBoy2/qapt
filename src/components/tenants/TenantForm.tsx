@@ -44,6 +44,9 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useGetUnits } from "@/hooks/useUnits";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 
 // Define the form schema with Zod
 const tenantFormSchema = z.object({
@@ -59,6 +62,7 @@ const tenantFormSchema = z.object({
   date_of_birth: z.date().optional(),
   forwarding_address: z.string().optional(),
   unit_id: z.string().optional(),
+  avatar_url: z.string().optional(),
 });
 
 interface TenantFormProps {
@@ -72,6 +76,9 @@ export function TenantForm({ tenant, open, onOpenChange }: TenantFormProps) {
   const updateTenant = useUpdateTenant();
   const { data: units, isLoading: unitsLoading } = useGetUnits();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const { toast } = useToast();
 
   // Initialize the form with react-hook-form
   const form = useForm<z.infer<typeof tenantFormSchema>>({
@@ -88,6 +95,7 @@ export function TenantForm({ tenant, open, onOpenChange }: TenantFormProps) {
       company_name: "",
       forwarding_address: "",
       unit_id: "none",
+      avatar_url: "",
     },
   });
 
@@ -107,7 +115,9 @@ export function TenantForm({ tenant, open, onOpenChange }: TenantFormProps) {
         date_of_birth: tenant.date_of_birth ? new Date(tenant.date_of_birth) : undefined,
         forwarding_address: tenant.forwarding_address || "",
         unit_id: tenant.unit_id || "none",
+        avatar_url: tenant.avatar_url || "",
       });
+      setAvatarPreview(tenant.avatar_url || null);
     } else {
       form.reset({
         first_name: "",
@@ -121,9 +131,103 @@ export function TenantForm({ tenant, open, onOpenChange }: TenantFormProps) {
         company_name: "",
         forwarding_address: "",
         unit_id: "none", // Use "none" instead of empty string
+        avatar_url: "",
       });
+      setAvatarPreview(null);
     }
   }, [tenant, form]);
+
+  // Handle avatar upload
+  const handleAvatarUpload = async (file: File) => {
+    setIsUploadingAvatar(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `tenant-avatar-${Date.now()}.${fileExt}`;
+      const filePath = `tenant-avatars/${fileName}`;
+
+      // Upload to image_url bucket
+      const { error: uploadError } = await supabase.storage
+        .from('image_url')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) {
+        throw new Error(uploadError.message);
+      }
+
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('image_url')
+        .getPublicUrl(filePath);
+
+      // Update form and preview
+      form.setValue('avatar_url', publicUrl);
+      setAvatarPreview(publicUrl);
+
+      toast({
+        title: "Avatar uploaded",
+        description: "Profile photo has been uploaded successfully.",
+      });
+    } catch (error: any) {
+      console.error("Error uploading avatar:", error);
+      toast({
+        title: "Upload failed",
+        description: error?.message || "Failed to upload avatar. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
+
+  // Handle avatar file selection
+  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please select an image file.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please select an image smaller than 5MB.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      handleAvatarUpload(file);
+    }
+  };
+
+  // Remove avatar
+  const handleRemoveAvatar = () => {
+    form.setValue('avatar_url', '');
+    setAvatarPreview(null);
+  };
+
+  // Get initials for avatar fallback
+  const getInitials = () => {
+    const firstName = form.watch('first_name') || '';
+    const lastName = form.watch('last_name') || '';
+    const companyName = form.watch('company_name') || '';
+    const isCompany = form.watch('is_company');
+
+    if (isCompany && companyName) {
+      return companyName.charAt(0).toUpperCase();
+    }
+
+    const firstInitial = firstName.charAt(0);
+    const lastInitial = lastName.charAt(0);
+    return (firstInitial + lastInitial).toUpperCase();
+  };
 
   // Handle form submission
   const onSubmit = async (values: z.infer<typeof tenantFormSchema>) => {
@@ -210,6 +314,62 @@ export function TenantForm({ tenant, open, onOpenChange }: TenantFormProps) {
                     )}
                   />
                 )}
+
+                {/* Avatar Upload */}
+                <div className="md:col-span-2">
+                  <FormLabel>Profile Photo (Optional)</FormLabel>
+                  <div className="flex items-center gap-6 mt-2">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage src={avatarPreview || form.watch('avatar_url')} />
+                      <AvatarFallback className="text-lg">{getInitials()}</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={isUploadingAvatar}
+                          onClick={() => document.getElementById('tenant-avatar-upload')?.click()}
+                        >
+                          {isUploadingAvatar ? (
+                            <>
+                              <i className="ri-loader-line animate-spin mr-2" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <i className="ri-upload-line mr-2" />
+                              Upload Photo
+                            </>
+                          )}
+                        </Button>
+                        {(avatarPreview || form.watch('avatar_url')) && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={handleRemoveAvatar}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <i className="ri-delete-bin-line mr-2" />
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        JPG, PNG or GIF. Max size 5MB.
+                      </p>
+                      <input
+                        id="tenant-avatar-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleAvatarChange}
+                      />
+                    </div>
+                  </div>
+                </div>
 
                 {/* First Name */}
                 <FormField

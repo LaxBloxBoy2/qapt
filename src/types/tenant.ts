@@ -13,6 +13,7 @@ export interface Tenant {
   date_of_birth?: string;
   forwarding_address?: string;
   unit_id?: string;
+  avatar_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +31,7 @@ export interface TenantFormValues {
   date_of_birth?: string;
   forwarding_address?: string;
   unit_id?: string;
+  avatar_url?: string;
 }
 
 export interface TenantWithUnit extends Tenant {

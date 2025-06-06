@@ -16,6 +16,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TenantForm } from "./TenantForm";
 import { TenantLeases } from "./TenantLeases";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -132,10 +133,13 @@ export function TenantProfile({ tenantId }: TenantProfileProps) {
         <CardHeader className="pb-4">
           <div className="flex justify-between items-start">
             <div className="flex items-center gap-4">
-              {/* Avatar with initials */}
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-2xl">
-                {getInitials()}
-              </div>
+              {/* Avatar with image or initials */}
+              <Avatar className="w-16 h-16">
+                <AvatarImage src={tenant.avatar_url} alt={getDisplayName()} />
+                <AvatarFallback className="text-2xl font-semibold">
+                  {getInitials()}
+                </AvatarFallback>
+              </Avatar>
 
               <div>
                 <CardTitle className="text-xl">{getDisplayName()}</CardTitle>

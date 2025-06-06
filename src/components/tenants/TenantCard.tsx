@@ -9,6 +9,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useDeleteTenant } from "@/hooks/useTenants";
 import {
   AlertDialog,
@@ -71,10 +72,13 @@ export function TenantCard({ tenant }: TenantCardProps) {
       <Card className="h-full flex flex-col hover:shadow-md transition-shadow">
         <CardContent className="p-4 flex-grow">
           <div className="flex items-center space-x-4">
-            {/* Avatar with initials */}
-            <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold text-lg">
-              {getInitials()}
-            </div>
+            {/* Avatar with image or initials */}
+            <Avatar className="w-12 h-12">
+              <AvatarImage src={tenant.avatar_url} alt={getDisplayName()} />
+              <AvatarFallback className="text-lg font-semibold">
+                {getInitials()}
+              </AvatarFallback>
+            </Avatar>
             
             <div className="flex-grow">
               <h3 className="font-medium">{getDisplayName()}</h3>

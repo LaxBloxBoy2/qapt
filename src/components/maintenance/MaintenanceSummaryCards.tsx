@@ -10,16 +10,18 @@ interface MaintenanceSummaryCardsProps {
 export function MaintenanceSummaryCards({ summary, isLoading }: MaintenanceSummaryCardsProps) {
   if (isLoading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {[...Array(4)].map((_, i) => (
-          <Card key={i}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-4 w-4" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-8 w-16 mb-1" />
-              <Skeleton className="h-3 w-20" />
+          <Card key={i} className="border-0 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <Skeleton className="h-3 w-20 mb-1" />
+                  <Skeleton className="h-6 w-12 mb-1" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+                <Skeleton className="h-6 w-6 rounded-full ml-3" />
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -67,24 +69,26 @@ export function MaintenanceSummaryCards({ summary, isLoading }: MaintenanceSumma
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
       {cards.map((card, index) => (
-        <Card key={index}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {card.title}
-            </CardTitle>
-            <div className={`p-2 rounded-full ${card.bgColor}`}>
-              <i className={`${card.icon} h-4 w-4 ${card.color}`} />
+        <Card key={index} className="border-0 shadow-sm">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex-1">
+                <p className="text-xs font-medium text-muted-foreground mb-1">
+                  {card.title}
+                </p>
+                <div className="text-xl font-bold">
+                  {card.value}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {card.description}
+                </p>
+              </div>
+              <div className={`p-1.5 rounded-full ${card.bgColor} ml-3`}>
+                <i className={`${card.icon} h-3.5 w-3.5 ${card.color}`} />
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {card.value}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {card.description}
-            </p>
           </CardContent>
         </Card>
       ))}
