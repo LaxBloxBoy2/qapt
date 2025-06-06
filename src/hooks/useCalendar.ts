@@ -408,31 +408,57 @@ export function useCompleteEvent() {
 
   return useMutation({
     mutationFn: async ({ eventId, eventType }: { eventId: string; eventType: string }) => {
+      console.log('Completing event:', { eventId, eventType });
+
       // Handle completion based on event type
       switch (eventType) {
         case 'maintenance_request':
-          await supabase
+          const { error: maintenanceError } = await supabase
             .from("maintenance_requests")
             .update({
               status: 'resolved',
               resolved_at: new Date().toISOString()
             })
             .eq("id", eventId);
+
+          if (maintenanceError) {
+            console.error('Error completing maintenance request:', maintenanceError);
+            throw new Error(maintenanceError.message);
+          }
           break;
+
         case 'custom_event':
-          await supabase
+          const { error: customError } = await supabase
             .from("custom_events")
             .update({ status: 'completed' })
             .eq("id", eventId);
+
+          if (customError) {
+            console.error('Error completing custom event:', customError);
+            throw new Error(customError.message);
+          }
+          console.log('Custom event completed successfully');
           break;
+
         // Add other event types as needed
+        default:
+          throw new Error(`Unsupported event type: ${eventType}`);
       }
 
       return { eventId, eventType };
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["calendar-events"] });
-      queryClient.invalidateQueries({ queryKey: ["maintenance-requests"] });
+    onSuccess: async () => {
+      console.log('Event completion successful, invalidating queries...');
+
+      // Invalidate and refetch calendar events
+      await queryClient.invalidateQueries({ queryKey: ["calendar-events"] });
+      await queryClient.invalidateQueries({ queryKey: ["maintenance-requests"] });
+
+      // Force a refetch to ensure UI updates
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["calendar-events"] });
+      }, 100);
+
       toast({
         title: "Event Completed",
         description: "Event has been marked as completed.",

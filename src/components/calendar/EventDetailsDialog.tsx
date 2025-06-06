@@ -58,8 +58,16 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
 
   const handleCompleteEvent = async () => {
     if (event.type === 'custom') {
+      // Extract the actual database ID from the calendar event ID
+      const actualEventId = event.relatedId || event.id.replace('custom_', '');
+      console.log('Completing custom event:', {
+        calendarEventId: event.id,
+        actualEventId,
+        relatedId: event.relatedId
+      });
+
       await completeEvent.mutateAsync({
-        eventId: event.id,
+        eventId: actualEventId,
         eventType: 'custom_event'
       });
       onOpenChange(false);
