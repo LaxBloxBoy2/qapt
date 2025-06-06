@@ -229,7 +229,10 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => console.log('Reschedule event:', event.id)}
+                onClick={() => {
+                  console.log('Reschedule event:', event.id);
+                  // TODO: Implement reschedule functionality
+                }}
                 className="flex items-center gap-2"
               >
                 <i className="ri-calendar-line h-4 w-4" />
@@ -240,7 +243,10 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => console.log('Edit event:', event.id)}
+                onClick={() => {
+                  console.log('Edit event:', event.id);
+                  // TODO: Implement edit functionality
+                }}
                 className="flex items-center gap-2"
               >
                 <i className="ri-edit-line h-4 w-4" />
@@ -253,43 +259,50 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
                   variant="default"
                   size="sm"
                   onClick={handleCompleteEvent}
+                  disabled={completeEvent.isPending}
                   className="flex items-center gap-2 bg-green-600 hover:bg-green-700"
                 >
-                  <i className="ri-check-line h-4 w-4" />
-                  Complete Event
+                  {completeEvent.isPending ? (
+                    <>
+                      <i className="ri-loader-line animate-spin h-4 w-4" />
+                      Completing...
+                    </>
+                  ) : (
+                    <>
+                      <i className="ri-check-line h-4 w-4" />
+                      Complete Event
+                    </>
+                  )}
                 </Button>
               )}
 
-              {/* Additional actions from event.actions if they exist */}
-              {event.actions && event.actions.map((action) => (
+              {/* Delete Event Button - only for custom events */}
+              {event.type === 'custom' && (
                 <Button
-                  key={action.id}
-                  variant={action.variant || "outline"}
+                  variant="destructive"
                   size="sm"
-                  onClick={() => handleAction(action)}
+                  onClick={handleDelete}
+                  disabled={deleteEvent.isPending}
                   className="flex items-center gap-2"
                 >
-                  <i className={`${action.icon} h-4 w-4`} />
-                  {action.label}
+                  {deleteEvent.isPending ? (
+                    <>
+                      <i className="ri-loader-line animate-spin h-4 w-4" />
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <i className="ri-delete-bin-line h-4 w-4" />
+                      Delete Event
+                    </>
+                  )}
                 </Button>
-              ))}
+              )}
             </div>
           </div>
         </div>
 
-        <DialogFooter className="flex justify-between">
-          <div>
-            {event.type === 'custom' && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDelete}
-              >
-                <i className="ri-delete-bin-line mr-2 h-4 w-4" />
-                Delete Event
-              </Button>
-            )}
-          </div>
+        <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Close
           </Button>
