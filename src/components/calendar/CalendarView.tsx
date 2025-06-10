@@ -226,13 +226,13 @@ export function CalendarView({
 
           /* Today button specific styling */
           .fc-today-button {
-            background: #059669 !important;
-            border-color: #059669 !important;
+            background: #16a34a !important;
+            border-color: #16a34a !important;
           }
 
           .fc-today-button:hover {
-            background: #047857 !important;
-            border-color: #047857 !important;
+            background: #15803d !important;
+            border-color: #15803d !important;
           }
 
           .fc-day {
