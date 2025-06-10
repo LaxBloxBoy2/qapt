@@ -228,20 +228,6 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
           <div>
             <h4 className="text-sm font-medium mb-3">Actions</h4>
             <div className="flex flex-wrap gap-2">
-              {/* Reschedule Button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  console.log('Reschedule event:', event.id);
-                  // TODO: Implement reschedule functionality
-                }}
-                className="flex items-center gap-2"
-              >
-                <i className="ri-calendar-line h-4 w-4" />
-                Reschedule
-              </Button>
-
               {/* Edit Button - only for custom events */}
               {event.type === 'custom' && (
                 <Button
