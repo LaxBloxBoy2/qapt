@@ -333,12 +333,39 @@ export function useUpdateCustomEvent() {
 
   return useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<CreateCustomEvent> }) => {
+      // Format date helper function
+      const formatDate = (dateStr: string | undefined) => {
+        if (!dateStr) return null;
+        // If it's already in YYYY-MM-DD format, return as is
+        if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+          return dateStr;
+        }
+        // Convert other formats to YYYY-MM-DD
+        const date = new Date(dateStr);
+        return date.toISOString().split('T')[0];
+      };
+
+      // Map camelCase to snake_case for database columns
+      const dbUpdates: any = {};
+
+      if (updates.title !== undefined) dbUpdates.title = updates.title;
+      if (updates.description !== undefined) dbUpdates.description = updates.description;
+      if (updates.date !== undefined) dbUpdates.date = formatDate(updates.date);
+      if (updates.endDate !== undefined) dbUpdates.end_date = formatDate(updates.endDate);
+      if (updates.time !== undefined) dbUpdates.time = updates.time;
+      if (updates.allDay !== undefined) dbUpdates.all_day = updates.allDay;
+      if (updates.propertyId !== undefined) dbUpdates.property_id = updates.propertyId;
+      if (updates.unitId !== undefined) dbUpdates.unit_id = updates.unitId;
+      if (updates.tags !== undefined) dbUpdates.tags = updates.tags;
+      if (updates.isRecurring !== undefined) dbUpdates.is_recurring = updates.isRecurring;
+      if (updates.recurringPattern !== undefined) dbUpdates.recurring_pattern = updates.recurringPattern;
+      if (updates.reminderMinutes !== undefined) dbUpdates.reminder_minutes = updates.reminderMinutes;
+
+      dbUpdates.updated_at = new Date().toISOString();
+
       const { data, error } = await supabase
         .from("custom_events")
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
+        .update(dbUpdates)
         .eq("id", id)
         .select()
         .single();
