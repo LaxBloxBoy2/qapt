@@ -18,7 +18,7 @@ import { useDashboardData } from "@/hooks/useDashboard";
 import { useDashboardPreferences } from "@/hooks/useDashboardPreferences";
 import { useEffect, useState } from "react";
 
-function DashboardPage() {
+function DashboardPage({ user }: any) {
   const { data: dashboardData, isLoading } = useDashboardData();
   const { enabledWidgets, preferences } = useDashboardPreferences();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -103,7 +103,7 @@ function DashboardPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white font-poppins">LeaseRidge</h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Welcome back! Here's what's happening with your properties.
+              Welcome back, {user?.firstName}! Here's what's happening with your properties.
             </p>
           </div>
           <DashboardCustomizationSimple />

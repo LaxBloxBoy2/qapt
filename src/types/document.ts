@@ -54,7 +54,6 @@ export interface Document {
   name: string;
   category: DocumentCategory;
   description?: string;
-  file_name: string;
   file_url: string;
   file_size?: number;
   file_type?: string;

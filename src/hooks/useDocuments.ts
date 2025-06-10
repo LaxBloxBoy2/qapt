@@ -25,7 +25,6 @@ export function useDocuments(filters?: DocumentFilters) {
             name,
             category,
             description,
-            file_name,
             file_url,
             file_size,
             file_type,

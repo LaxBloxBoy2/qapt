@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -14,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CalendarEvent, EVENT_TYPE_CONFIG } from "@/types/calendar";
 import { useCompleteEvent, useDeleteCustomEvent } from "@/hooks/useCalendar";
+import { EditEventDialog } from "./EditEventDialog";
 
 interface EventDetailsDialogProps {
   event: CalendarEvent | null;
@@ -25,6 +27,7 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
   const router = useRouter();
   const completeEvent = useCompleteEvent();
   const deleteEvent = useDeleteCustomEvent();
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
   if (!event) return null;
 
@@ -239,19 +242,18 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
                 Reschedule
               </Button>
 
-              {/* Edit Button */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  console.log('Edit event:', event.id);
-                  // TODO: Implement edit functionality
-                }}
-                className="flex items-center gap-2"
-              >
-                <i className="ri-edit-line h-4 w-4" />
-                Edit Event
-              </Button>
+              {/* Edit Button - only for custom events */}
+              {event.type === 'custom' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowEditDialog(true)}
+                  className="flex items-center gap-2"
+                >
+                  <i className="ri-edit-line h-4 w-4" />
+                  Edit Event
+                </Button>
+              )}
 
               {/* Complete Event Button - only show if not completed */}
               {event.status !== 'completed' && (
@@ -308,6 +310,13 @@ export function EventDetailsDialog({ event, open, onOpenChange }: EventDetailsDi
           </Button>
         </DialogFooter>
       </DialogContent>
+
+      {/* Edit Event Dialog */}
+      <EditEventDialog
+        event={event}
+        open={showEditDialog}
+        onOpenChange={setShowEditDialog}
+      />
     </Dialog>
   );
 }
