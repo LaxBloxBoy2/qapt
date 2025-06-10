@@ -88,8 +88,8 @@ export function EditEventDialog({ event, open, onOpenChange }: EditEventDialogPr
         endDate: event.endDate || "",
         time: event.time || "",
         allDay: event.allDay || true,
-        propertyId: event.propertyId || undefined,
-        unitId: event.unitId || undefined,
+        propertyId: event.propertyId || "none",
+        unitId: event.unitId || "none",
         isRecurring: event.isRecurring || false,
         recurringPattern: (event.recurringPattern && ["daily", "weekly", "monthly", "yearly"].includes(event.recurringPattern)
           ? event.recurringPattern as "daily" | "weekly" | "monthly" | "yearly"
@@ -115,8 +115,8 @@ export function EditEventDialog({ event, open, onOpenChange }: EditEventDialogPr
           endDate: data.endDate,
           time: data.allDay ? undefined : data.time,
           allDay: data.allDay,
-          propertyId: data.propertyId,
-          unitId: data.unitId,
+          propertyId: data.propertyId === "none" ? undefined : data.propertyId,
+          unitId: data.unitId === "none" ? undefined : data.unitId,
           isRecurring: data.isRecurring,
           recurringPattern: data.isRecurring ? data.recurringPattern : undefined,
           reminderMinutes: data.reminderMinutes ? parseInt(data.reminderMinutes) : undefined,
@@ -279,7 +279,7 @@ export function EditEventDialog({ event, open, onOpenChange }: EditEventDialogPr
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No property</SelectItem>
+                        <SelectItem value="none">No property</SelectItem>
                         {properties.map((property) => (
                           <SelectItem key={property.id} value={property.id}>
                             {property.name}
@@ -306,7 +306,7 @@ export function EditEventDialog({ event, open, onOpenChange }: EditEventDialogPr
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="">No unit</SelectItem>
+                        <SelectItem value="none">No unit</SelectItem>
                         {filteredUnits.map((unit) => (
                           <SelectItem key={unit.id} value={unit.id}>
                             {unit.name}

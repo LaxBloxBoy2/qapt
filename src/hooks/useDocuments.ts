@@ -386,7 +386,6 @@ export function useCreateDocument() {
           name: input.name,
           category: input.category,
           description: input.description,
-          file_name: input.file.name,
           file_size: input.file.size,
           file_type: input.file.type,
           status: "active",
