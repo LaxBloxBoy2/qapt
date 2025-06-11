@@ -158,7 +158,7 @@ export function ExpenseBreakdown() {
             <i className="ri-pie-chart-line text-primary" />
             Expense Breakdown
           </div>
-          <Button variant="ghost" size="sm" onClick={() => router.push('/finances')}>
+          <Button variant="ghost" size="sm" onClick={() => router.push('/transactions')}>
             <i className="ri-external-link-line mr-1" />
             View Details
           </Button>

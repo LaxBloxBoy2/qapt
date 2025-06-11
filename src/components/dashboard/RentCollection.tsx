@@ -226,7 +226,7 @@ export function RentCollection() {
             <i className="ri-money-dollar-circle-line text-primary" />
             Rent Collection
           </div>
-          <Button variant="ghost" size="sm" onClick={() => router.push('/finances')}>
+          <Button variant="ghost" size="sm" onClick={() => router.push('/transactions')}>
             <i className="ri-external-link-line mr-1" />
             View Details
           </Button>

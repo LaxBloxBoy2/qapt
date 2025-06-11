@@ -339,17 +339,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
           )}
         </div>
 
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 relative"
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? (
-            <i className="ri-sun-line text-gray-600 dark:text-gray-300 text-lg" />
-          ) : (
-            <i className="ri-moon-line text-gray-600 dark:text-gray-300 text-lg" />
-          )}
-        </button>
+
 
         <NotificationDropdown />
 
