@@ -132,15 +132,15 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
     {
       title: "Documents",
       icon: "ri-folder-line",
+      href: "/documents",
+    },
+    {
+      title: "Reports",
+      icon: "ri-file-chart-line",
       href: null, // No direct link, just a collapsible header
       submenu: [
         {
-          title: "All Documents",
-          icon: "ri-folder-line",
-          href: "/documents",
-        },
-        {
-          title: "Reports",
+          title: "All Reports",
           icon: "ri-file-chart-line",
           href: "/reports",
         },
@@ -216,11 +216,11 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
            pathname.startsWith('/transactions/');
   });
 
-  // State for tracking if Documents submenu is expanded
-  const [isDocumentsExpanded, setIsDocumentsExpanded] = useState<boolean>(() => {
-    // Check if current path is a Documents submenu item (including reports)
+  // State for tracking if Reports submenu is expanded
+  const [isReportsExpanded, setIsReportsExpanded] = useState<boolean>(() => {
+    // Check if current path is a Reports submenu item
     if (!pathname) return false;
-    return pathname.startsWith('/documents') || pathname.startsWith('/reports');
+    return pathname.startsWith('/reports');
   });
 
   // Update submenu expanded states when pathname changes
@@ -252,16 +252,16 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                            pathname.startsWith('/transactions/');
     console.log("Is finances path:", isFinancesPath);
 
-    // Check if current path is a Documents submenu item (including reports)
-    const isDocumentsPath = pathname.startsWith('/documents') || pathname.startsWith('/reports');
-    console.log("Is documents path:", isDocumentsPath);
+    // Check if current path is a Reports submenu item
+    const isReportsPath = pathname.startsWith('/reports');
+    console.log("Is reports path:", isReportsPath);
 
     // Auto-expand submenus when on related pages
     setIsPropertiesExpanded(isPropertiesPath);
     setIsLeasesExpanded(isLeasesPath);
     setIsContactsExpanded(isContactsPath);
     setIsFinancesExpanded(isFinancesPath);
-    setIsDocumentsExpanded(isDocumentsPath);
+    setIsReportsExpanded(isReportsPath);
   }, [pathname]);
 
   return (
@@ -311,10 +311,10 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                           console.log("Current isFinancesExpanded:", isFinancesExpanded);
                           console.log("Will set to:", !isFinancesExpanded);
                           setIsFinancesExpanded(!isFinancesExpanded);
-                        } else if (item.title === "Documents") {
-                          console.log("Current isDocumentsExpanded:", isDocumentsExpanded);
-                          console.log("Will set to:", !isDocumentsExpanded);
-                          setIsDocumentsExpanded(!isDocumentsExpanded);
+                        } else if (item.title === "Reports") {
+                          console.log("Current isReportsExpanded:", isReportsExpanded);
+                          console.log("Will set to:", !isReportsExpanded);
+                          setIsReportsExpanded(!isReportsExpanded);
                         }
                       }}
                       className={cn(
@@ -337,7 +337,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                             (item.title === "Leases" && isLeasesExpanded) ||
                             (item.title === "Contacts" && isContactsExpanded) ||
                             (item.title === "Finances" && isFinancesExpanded) ||
-                            (item.title === "Documents" && isDocumentsExpanded)
+                            (item.title === "Reports" && isReportsExpanded)
                               ? "ri-arrow-down-s-line"
                               : "ri-arrow-right-s-line"
                           } />
@@ -350,7 +350,7 @@ export default function Sidebar({ collapsed, toggleSidebar }: SidebarProps) {
                       (item.title === "Leases" && isLeasesExpanded) ||
                       (item.title === "Contacts" && isContactsExpanded) ||
                       (item.title === "Finances" && isFinancesExpanded) ||
-                      (item.title === "Documents" && isDocumentsExpanded)) && (
+                      (item.title === "Reports" && isReportsExpanded)) && (
                       <div className="sidebar-submenu">
                         {item.submenu.map((subItem) => (
                           <Link
