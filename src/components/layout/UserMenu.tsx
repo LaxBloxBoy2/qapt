@@ -107,10 +107,7 @@ export function UserMenu() {
           <span>Settings</span>
         </DropdownMenuItem>
         
-        <DropdownMenuItem onClick={() => router.push("/notifications")}>
-          <i className="ri-notification-line mr-2 h-4 w-4" />
-          <span>Notifications</span>
-        </DropdownMenuItem>
+
         
         <DropdownMenuSeparator />
         

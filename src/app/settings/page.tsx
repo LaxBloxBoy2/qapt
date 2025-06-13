@@ -6,7 +6,7 @@ import { withAuth } from "@/components/auth/withAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfileSettings } from "@/components/settings/ProfileSettings";
 import { AppPreferences } from "@/components/settings/AppPreferences";
-import { NotificationSettings } from "@/components/settings/NotificationSettings";
+
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { Integrations } from "@/components/settings/Integrations";
 import { BillingSubscription } from "@/components/settings/BillingSubscription";
@@ -24,12 +24,7 @@ const settingsTabs = [
     icon: 'ri-settings-line',
     component: AppPreferences,
   },
-  {
-    id: 'notifications',
-    label: 'Notifications',
-    icon: 'ri-notification-line',
-    component: NotificationSettings,
-  },
+
   {
     id: 'team',
     label: 'Team',
@@ -63,7 +58,7 @@ function SettingsPage() {
 
         {/* Settings Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6">
+          <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5">
             {settingsTabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
@@ -109,8 +104,7 @@ function getTabDescription(tabId: string): string {
       return 'Manage your personal information and account details.';
     case 'preferences':
       return 'Customize your app experience and default settings.';
-    case 'notifications':
-      return 'Control how and when you receive notifications.';
+
     case 'team':
       return 'Manage team members and their permissions.';
     case 'integrations':

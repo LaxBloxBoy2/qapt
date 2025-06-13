@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/components/layout/ThemeProvider";
-import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
+
 import { useUser } from "@/contexts/UserContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "remixicon/fonts/remixicon.css";
@@ -341,7 +341,7 @@ export default function Topbar({ sidebarCollapsed }: TopbarProps) {
 
 
 
-        <NotificationDropdown />
+
 
         <button
           onClick={() => router.push('/help')}
