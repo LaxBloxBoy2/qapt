@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
+import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
 import { UserMenu } from "@/components/layout/UserMenu";
 
 export function DashboardHeader() {
@@ -147,7 +147,8 @@ export function DashboardHeader() {
             </Button>
           </div>
 
-
+          {/* Notifications */}
+          <NotificationDropdown />
 
           {/* User Menu */}
           <UserMenu />
